@@ -169,7 +169,7 @@ In order to interact with a hardware peripheral or a system block, we need to us
 with the low-level details of configuring the hardware the way we want.
 
 The following code snippet will take the devicetree node identifier returned by DT_NODELABEL() and return a pointer to the device object.
-Then device_is_ready() verifies that the device is ready for use, i.e. in a state so that it can be used with its standard API.
+Then `device_is_ready()` verifies that the device is ready for use, i.e. in a state so that it can be used with its standard API.
 
 ```cpp
 const struct device *dev;
@@ -187,4 +187,31 @@ functions to interact with GPIO peripherals.
 When using any driver in Zephyr, the first step is to initialize it by retrieving the device pointer.
 
 #### Initializing the API
+
+Before using the device pointer contained in gpio_dt_spec led, we need to check if it’s ready using `device_is_ready()`.
+
+```cpp
+if (!device_is_ready(led.port)) {
+    return;
+}
+```
+
+#### Configure a single pin
+
+This is done by calling the function `gpio_pin_configure_dt()`, which has the following signature:
+
+```cpp
+gpio_pin_configure_dt(&led, GPIO_OUTPUT);
+```
+
+The following line configures the pin led.pin as an output that is active low.
+
+```cpp
+gpio_pin_configure_dt(&led, GPIO_OUTPUT | GPIO_ACTIVE_LOW);
+```
+
+#### Write to an output pin
+
+Writing to an output pin is straightforward by using the function `gpio_pin_set_dt()`, which has the following signature
+
 
