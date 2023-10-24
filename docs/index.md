@@ -1,6 +1,7 @@
 # nRF Connect SDK Fundamentals
 
 [Documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/index.html)
+[API GPIO documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/hardware/peripherals/gpio.html)
 
 `RTOS` - serve real-time applications that process data as it comes in, typically without buffer delays. These applications include embedded systems,
 telecommunications, and industrial automation systems.
@@ -214,4 +215,327 @@ gpio_pin_configure_dt(&led, GPIO_OUTPUT | GPIO_ACTIVE_LOW);
 
 Writing to an output pin is straightforward by using the function `gpio_pin_set_dt()`, which has the following signature
 
+For example, the following line sets the pin associated with gpio_dt_spec led, which can be denoted as led.pin, to logic 1 “active state”:
+
+```cpp
+gpio_pin_set_dt(&led, 1);
+```
+
+For example, the following line will toggle the pin led.pin, whenever this API is called.
+
+```cpp
+gpio_pin_toggle_dt(&led);
+```
+
+#### Read from an input pin
+
+Reading a pin configured as an input is not as straightforward as writing to a pin configured as an output.
+There are two possible methods to read the status of an input pin:
+
+##### Polling
+
+Polling means continuously reading the status of the pin to check if it has changed. To read the current status of a pin, all you need to do is to
+call the function `gpio_pin_get_dt()`
+
+For example, the following line reads the current status of led.pin saves it in a variable called val.
+
+```cpp
+val = gpio_pin_get_dt(&led);
+```
+
+##### Interrupt method
+
+(Interrupt handler is also known as an interrupt service routine)
+
+You can only configure an interrupt on a GPIO pin configured as an input.
+
+1. Configure the interrupt on a pin.
+
+   The following line will configure an interrupt on dev.pin on the change to logical level 1.
+
+   ```cpp
+   gpio_pin_interrupt_configure_dt(&button,GPIO_INT_EDGE_TO_ACTIVE);
+   ```
+
+2. Define the callback function `pin_isr()`.
+
+   The signature (prototype) of the callback function is shown below
+
+   ```cpp
+   void pin_isr(const struct device *dev, struct gpio_callback *cb, gpio_port_pins_t pins);
+   ```
+
+3. Define a variable of type static struct `gpio_callback` as shown in the code line below.
+
+   ```cpp
+   static struct gpio_callback pin_cb_data;
+   ```
+
+4. Initialize the gpio callback variable `pin_cb_data` using `gpio_init_callback()`.
+
+   For example, the following line will initialize the `pin_cb_data` variable with the callback function `pin_isr` and the bit mask of pin `dev.pin`.
+   Note the use of the macro `BIT(n)`, which simply gets an unsigned integer with bit position `n` set.
+
+   ```cpp
+   gpio_init_callback(&pin_cb_data, pin_isr, BIT(dev.pin));
+   ```
+
+5. The final step is to add the callback function through the function `gpio_add_callback()`.
+
+   For example, the following line adds the callback function that we set up in the previous steps.
+
+   ```cpp
+   gpio_add_callback(button.port, &pin_cb_data);
+   ```
+
+### Program example - blinky
+
+1. Include modules
+
+   ```cpp
+   #include <zephyr/kernel.h>
+   #include <zephyr/drivers/gpio.h>
+   ```
+
+2. Define the node identifier
+
+   ```cpp
+   #define LED0_NODE DT_ALIAS(led0)
+   ```
+
+3. Retrieve the device pointer, pin number, and configuration flags.
+
+   ```cpp
+   static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE,  gpios);
+   ```
+
+4. Verify that the device is ready for use
+
+   ```cpp
+   if (!device_is_ready(led.port)) {
+       return;
+   }
+   ```
+
+5. Configure the GPIO pin
+
+   ```cpp
+   int ret;
+   ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+   if (ret < 0) {
+       return;
+   }
+   ```
+
+6. Continuously toggle the GPIO pin
+
+   ```cpp
+   while (1) {
+       ret = gpio_pin_toggle_dt(&led);
+       if (ret < 0) {
+           return;
+       }
+       k_msleep(SLEEP_TIME_MS);
+   }
+   ```
+
+## Lesson 3
+
+Create a minimal working application from scratch and add our own custom files and configurations to customize the application.
+
+```sh
+app/
+|-- CMakeLists.txt
+|-- Kconfig
+|-- prj.conf
+|-- <board_name>.overlay
+|-- src/
+    |-- main.c
+```
+
+Objectives
+
+- Understand the use of Kconfig configuration files to enable and configure the different software modules available in the nRF Connect SDK
+- Examine an application configuration file and a board configuration file and understand the relation between them
+- Learn how to explore the available configuration options of a certain software module using guiconfig
+- Understand multi-image builds, and how a child-image is added to your application
+- Practice through hands-on exercises how to create an application from scratch, and how to add modules using Kconfig and modify the devicetree
+
+### Configuration files
+
+#### Application & board
+
+Each configuration option must start with the prefix CONFIG_ followed by the name of the software module to configure, then the value to be set, with
+no spaces around the equals sign.
+
+```sh
+CONFIG_<symbol_name>=<value>
+```
+
+- App cfg: prj.conf
+- Brd cfg: <board_name>_defconfig in <nRF Connect SDK Installation Path>\zephyr\boards\arm\nrf52833dk_nrf52833.
+
+You should never modify any board configuration files. Instead, rely on the application configuration file to set newconfigurations
+and subsequently overwrite any default board configurations if needed.  If you change the board configuration file directly, then these changes will
+apply for all projects using that board.
+
+#### Kernel Configuration (Kconfig)
+
+An alternative way to modify the contents of the prj.conf (application configuration file) is by using the Kconfig view.
+It groups all functionalities provided by the Zephyr kernel into menus and submenus which can be viewed in a graphical tree format.
+
+If instead of Kconfig, you find GUIconfig, you can still view Kconfig by viewing the submenu under Guiconfig.
+
+<img src="./assets/kconfig.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;">
+
+### Devicetree overlays, CMake, and multi-image builds
+
+(PATH to fully compiled devicetree of a build: application_path/build/zephyr/zephyr.dts)
+
+It is not recommended to modify the devicetree directly, so instead we use devicetree overlays to do this.
+The overlay only needs to include the node and property it wants to modify.
+
+```sh
+&spi1{
+ status = "okay";
+};
+&pinctrl {
+ spi1_default: spi1_default {
+  group1 {
+   psels = <NRF_PSEL(SPIM_MOSI, 0, 25)>;
+  };
+ };
+ spi1_sleep: spi1_sleep {
+  group1 {
+   psels = <NRF_PSEL(SPIM_MOSI, 0, 25)>;
+  };
+ };
+};
+```
+
+The overlay file shown above will set node spi1 to have the status okay, essentially enabling this node. Then it is changing the pin configuration for
+the SPIM_MOSI line to pin 25 by changing the appropriate sub-nodes and properties in the &pinctrl node. Note that you must change the pin configuration
+for both the default and sleep states.
+
+### CMake
+
+The file `CMakeLists.txt` is the main CMake project file and the source of this build process configuration.
+
+### Multi-Image Builds
+
+he firmware running on a device can consist of one application or image, or it can consist of multiple images, making it a multi-image build.
+
+Multi-image builds are used in the following cases:
+
+- Applications that have DFU enabled (serial, USB-CDC, BLE, etc.)
+- Multi-core or multi-partition targets (nRF53 and nRF9160)
+
+### App from scratch
+
+Necessary 3 files:
+
+- `/src/main.c`
+- `prj.conf`
+- `CMakeLists.txt`
+
+CMakeLists
+
+```sh
+cmake_minimum_required(VERSION 3.20.0)
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(hello_world)
+target_sources(app PRIVATE src/main.c)
+```
+
+main.c
+
+```cpp
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+
+void main(void)
+{
+ while(1) {
+  printk("Hello World!\n\r");
+  k_msleep(1000);
+ }
+}
+```
+
+### Adding custom configurations
+
+create a file called Kconfig in the application directory (the same location as CMakeLists.txt and prj.conf). Make sure the file does not have a file extension.
+
+```sh
+source "Kconfig.zephyr"
+config MYFUNCTION
+  bool "Enable my function"
+  default n
+```
+
+In CMakeLists.txt, we want the addition of the custom files to be conditional. Change the last line to use the function target_sources_ifdef(), like this:
+
+```sh
+target_sources_ifdef(CONFIG_MYFUNCTION app PRIVATE src/myfunction.c)
+```
+
+Enable the config by adding the following line to prj.conf
+
+```sh
+CONFIG_MYFUNCTION=y
+```
+
+Update main.c
+
+```cpp
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#ifdef CONFIG_MYFUNCTION
+#include "myfunction.h"
+#endif
+void main(void)
+{
+ while(1){
+  #ifdef CONFIG_MYFUNCTION
+  int a = 3, b = 4;
+   printk("The sum of %d and %d is %d\n\r", a, b, sum(a,b));
+  #else
+   printk("MYFUNCTION not enabled\r\n");
+   return;
+  #endif
+  k_msleep(1000);
+ }
+}
+```
+
+Build and flash the application
+
+If you will change in prj.conf to
+
+```sh
+CONFIG_MYFUNCTION=n
+```
+
+you will get the output: `MYFUNCTION not enabled`
+
+### Modifying the devicetree - changing the baud rate at which information is sent to the console
+
+Create an overlay file in the application directory (the same location as CMakeLists.txt and prj.conf) with the name of the board you’re using,
+in our case nrf52833dk_nrf52833.overlay
+
+In nRF Connect for VS Code, in the Details View, there is an option to create an overlay file with the same board name used for the build.
+
+Add the following to the overlay file, which can be found in the root directory of the application, to change this property:
+
+```sh
+&uart0 {
+	current-speed = <9600>;
+};
+```
+
+Do a `pristine build` and flash the sample to the board.
+
+Observe that the serial terminal doesn’t show any output. This is because we changed the baud rate in the application to 9600 baud/sec while the
+serial terminal is launched with the default baud rate of 115200 baud/sec
 
