@@ -1,7 +1,8 @@
 # nRF Connect SDK Fundamentals
 
-[Documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/index.html)
-[API GPIO documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/hardware/peripherals/gpio.html)
+[Documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/index.html)</br>
+[API GPIO documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/hardware/peripherals/gpio.html)</br>
+[Logging documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/services/logging/index.html#logging-api)</br>
 
 `RTOS` - serve real-time applications that process data as it comes in, typically without buffer delays. These applications include embedded systems,
 telecommunications, and industrial automation systems.
@@ -530,7 +531,7 @@ Add the following to the overlay file, which can be found in the root directory 
 
 ```sh
 &uart0 {
-	current-speed = <9600>;
+ current-speed = <9600>;
 };
 ```
 
@@ -539,3 +540,126 @@ Do a `pristine build` and flash the sample to the board.
 Observe that the serial terminal doesn’t show any output. This is because we changed the baud rate in the application to 9600 baud/sec while the
 serial terminal is launched with the default baud rate of 115200 baud/sec
 
+## Lesson 4
+
+We will learn more about logging using both the simple method of `printk()` and a sophisticated method using the advanced logging module.
+
+- Learn how to print strings and formatted strings to a console using `printk()`
+- Recognize the limitations of `printk()`
+- Learn how to print strings and formatted strings to a console using the logger module
+- Learn how to hex dump variables using the logger module
+- Explore the logger module features
+- Practice through hands-on exercises enabling/configuring software modules
+
+### `printk()`
+
+```cpp
+#include <zephyr/sys/printk.h>
+```
+
+The syntax `printk()` is similar to the standard printf() in C.
+However, `printk()` is a less advanced function that only supports a subset of the features that printf() does, making it optimized for embedded development.
+
+A basic set of specifiers are supported:
+
+- Signed decimal: %d, %i and its subcategories
+- Unsigned decimal: %u and its subcategories
+- Unsigned hexadecimal: %x (%X is treated as %x)
+- Pointer: %p
+- String: %s
+- Character: %c
+- Percent: %%
+- New line: \n
+- Carriage return: \r
+
+Field width (with or without leading zeroes) is supported. Length attributes h, hh, l, ll and z are supported.
+However, integral values with lld and lli are only printed if they fit in a long, otherwise ERR is printed.
+Full 64-bit values may be printed with llx. Flags and precision attributes (float and double) are not supported by default,
+but can be enabled manually (lesson 6).
+
+Examples of use:
+
+```cpp
+printk("Button 1 was pressed!\n\r");
+
+int x = 44;
+printk("The value of x is %d\n\r",x);
+```
+
+To use `printk()` you need to:
+
+1. Include the console drivers (enabling the configuration option CONFIG_CONSOLE in the application configuration file).
+2. Select the console (UART console (CONFIG_UART_CONSOLE) and RTT console (CONFIG_RTT_CONSOLE)).
+3. Include the header file `<zephyr/sys/printk.h>` in your application source code.
+
+### Logger module
+
+prj.conf
+
+```sh
+CONFIG_LOG=y
+```
+
+```cpp
+#include <zephyr/logging/log.h>
+
+LOG_MODULE_REGISTER(Less4_Exer2,LOG_LEVEL_DBG);
+```
+
+Recommended method for sending messages to a console, unlike the `printk()` function, which will not return until all bytes of the message are sent.
+
+- Multiple backends
+- Compile time filtering on module level
+- Run time filtering independent for each backend
+- Timestamping with user-provided function
+- Dedicated API for dumping data
+- Coloring of logs
+- `printk()` support – printk message can be redirected to the logger
+
+By using proper configuration options, logs can be gradually removed from compilation to reduce image size and execution time when logs are not needed.
+During compilation, logs can be filtered out based on module and severity level.
+
+When logging is enabled globally, it works for all modules. However, modules can disable logging locally.
+Every module can specify its own logging level (`LOG_LEVEL_[level]`) or use `LOG_LEVEL_NONE`, which will disable the logging for that module.
+
+The logger module is designed to be thread-safe and minimizes the time needed to log the message.
+
+#### Severity levels
+
+|||||
+|---|---|---|---|
+|1 (most severe) | Error | Severe error conditions | LOG_LEVEL_ERR |
+|2 | Warning | Conditions that should be taken care of | LOG_LEVEL_WRN |
+| 3 | Info | Informational messages that require no action | LOG_LEVEL_INF |
+| 4 (least severe) | Debug Debugging messages | LOG_LEVEL_DBG|
+
+`LOG_X` for standard printf-like messages, where `X` can be `DBG`, `INF`, `WRN`, or `ERR`.
+
+```cpp
+LOG_INF("Exercise %d",2);
+LOG_DBG("A log message in debug level");
+LOG_WRN("A log message in warning level!");
+LOG_ERR("A log message in Error level!");
+```
+
+#### Dumping data
+
+`LOG_HEXDUMP_X`  macros for dumping data where `X` can be `DBG`, `INF`, `WRN`, or `ERR`.
+
+```cpp
+uint8_t data[] = {0x00, 0x01, 0x02, 0x03,
+                  0x04, 0x05, 0x06, 0x07,
+                  'H', 'e', 'l', 'l','o'};
+LOG_HEXDUMP_INF(data, sizeof(data),"Sample Data!");
+```
+
+#### Kconfig logging options
+
+|||
+|---|---|
+|LOG_MODE_DEFERRED| Deferred mode is used by default. Log messages are buffered and processed later. This mode has the least impact on the application. Time-consuming processing is deferred to the known context.|
+|LOG_PROCESS_THREAD|  A thread is created by the logger subsystem (deferred mode). This thread is woken up periodically (LOG_PROCESS_THREAD_SLEEP_MS) or whenever the number of buffered messages exceeds the threshold (LOG_PROCESS_TRIGGER_THR).|
+|LOG_BACKEND_UART | Send logs to the UART console.|
+|LOG_BACKEND_SHOW_COLOR | Prints errors in red and warnings in yellow. Not all terminal emulators support this feature.|
+|LOG_BACKEND_FORMAT_TIMESTAMP | Timestamp is formatted to `hh:mm:ss.ms,us`.|
+|LOG_MODE_OVERFLOW | If there is no space to log a new message, the oldest one is dropped.|
