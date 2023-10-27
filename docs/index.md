@@ -663,3 +663,130 @@ LOG_HEXDUMP_INF(data, sizeof(data),"Sample Data!");
 |LOG_BACKEND_SHOW_COLOR | Prints errors in red and warnings in yellow. Not all terminal emulators support this feature.|
 |LOG_BACKEND_FORMAT_TIMESTAMP | Timestamp is formatted to `hh:mm:ss.ms,us`.|
 |LOG_MODE_OVERFLOW | If there is no space to log a new message, the oldest one is dropped.|
+
+## Lesson 5
+
+Learn how to use the UART driver in an interrupt-driven fashion so that when new data arrives the application is interrupted and a callback
+function (ISR) is called.
+
+Objectives
+
+- Learn how to send/receive data over UART in asynchronous mode (interrupt-driven)
+- Learn how to configure the UART peripheral hardware through the UART API
+- Examine and practice the use of the UART driver API
+
+Data transfer is done serially. It starts with a starting bit, usually by driving logic low for one clock cycle.
+In the next n clock cycles, n bits are sent sequentially from the transmitter (n is usually 8). Optionally,
+1 parity bit can be added to improve transfer reliability. In the end, the data wire is usually pulled up high to indicate the end of transfer.
+
+Parity bit: A parity bit describes the evenness or oddness of the data and is a way for the receiver to tell if the data has changed during transmission.
+
+### UART Driver
+
+In Zephyr, there are three different ways to access the UART peripheral, all with different API functions; polling, interrupts-driven and asynchronous.
+
+Polling - `uart_poll_in()` reading function and `uart_poll_out()` writing function.
+Asynchronous API - the most efficient way to use UART, it allows to read and write data in the background using EasyDMA.
+
+#### Enable driver
+
+1. Enable for use by adding `prj.conf`
+
+      ```sh
+      CONFIG_SERIAL=y
+      CONFIG_UART_ASYNC_API=y
+      ```
+
+2. Include the header file
+
+      ```cpp
+      #include <zephyr/drivers/uart.h>
+      ```
+
+3. Create an instance of uart device structure
+
+      ```cpp
+      const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
+      if (!device_is_ready(uart)) {
+         return;
+      }
+      ```
+
+      The pointer `uart` of type `struct device` is the structure that is used when interacting with the UART API.
+      On the other hand, `uart0` is the node label of the devicetree node that represents the UART hardware controller on the chip.
+
+#### UART Configurations
+
+1. Configuration of UART communication
+
+      The default static configuration of the UART hardware is obtained from the devicetree.
+
+      ```cpp
+      const struct uart_config uart_cfg = {
+      .baudrate = 115200,
+      .parity = UART_CFG_PARITY_NONE,
+      .stop_bits = UART_CFG_STOP_BITS_1,
+      .data_bits = UART_CFG_DATA_BITS_8,
+      .flow_ctrl = UART_CFG_FLOW_CTRL_NONE
+      };
+
+      int err = uart_configure(uart, &uart_cfg);
+
+      if (err == -ENOSYS) {
+         return -ENOSYS;
+      }
+      ```
+
+2. Define callback function
+
+The callback function should have the following signature:
+
+```cpp
+
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
+{
+	switch (evt->type)
+	{
+	case UART_TX_DONE:
+		// do something
+		break;
+	case UART_TX_ABORTED:
+		// do something
+		break;
+	case UART_RX_RDY:
+		// do something
+		break;
+	case UART_RX_BUF_REQUEST:
+		// do something
+		break;
+	case UART_RX_BUF_RELEASED:
+		// do something
+		break;
+	case UART_RX_DISABLED:
+		// do something
+		break;
+	case UART_RX_STOPPED:
+		// do something
+		break;
+	default:
+		break;
+	}
+}
+```
+
+3. Register the callback function by calling the function `uart_callback_set()`, which takes three parameters.
+
+```cpp
+	err = uart_callback_set(uart, uart_cb, NULL);
+		if (err) {
+			return err;
+		}
+```
+
+#### Receive data
+
+1. Declare a receive buffer to store the incoming data.
+
+```cpp
+static uint8_t rx_buf[10] = {0}; //A buffer to store incoming UART data
+```

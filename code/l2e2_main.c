@@ -10,7 +10,7 @@
 #include <zephyr/drivers/gpio.h>
 
 /* STEP 9 - Increase the sleep time from 100ms to 10 minutes  */
-#define SLEEP_TIME_MS 10*60*1000
+#define SLEEP_TIME_MS 10 * 60 * 1000
 
 /* SW0_NODE is the devicetree node identifier for the "sw0" alias */
 #define SW0_NODE DT_ALIAS(sw0)
