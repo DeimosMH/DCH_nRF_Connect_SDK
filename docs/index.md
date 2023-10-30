@@ -963,3 +963,220 @@ if(ret != 0){
 ```
 
 Writing and subsequently reading is a common operation in the I2C protocol because you need to write the register you want to read from before reading.
+
+## Lesson 7 - Multithreaded applications
+
+How to create threads with different priorities and learn about the scheduler’s behavior through features like time slicing and workqueues in Zephyr RTOS.
+
+Objectives:
+
+- Understand the main difference between bare-metal vs RTOS programming, including both advantages and disadvantages in utilizing an RTOS
+- Get familiarized with Zephyr RTOS execution model, ISRs, threads, thread’s life-cycle and inter-task communication/synchronization mechanisms, and
+the scheduler
+- Learn the basics of kernel services related to threads (user-defined threads, system threads, workqueue threads)
+- Learn about preemptive scheduling and time-slicing through hands-on exercises
+- Practice through hands-on exercises how to create threads, thread yielding and sleeping
+- Practice through hands-on exercises how to offload work to a workqueue
+
+### Bare-metal vs RTOS-based application
+
+#### Bare-metal
+
+A bare-metal application, at its core, is just a big loop in the main function right after you have initialized the hardware/software at the device
+powerup/reset routines. All the execution is sequential logic, in other words, all instructions are executed in sequence unless interrupted by an
+interrupt service routine (ISR). So the only non-sequential logic you have in bare-metal programming makes use of exceptions.</br>
+
+In general, a bare-metal program is typically more power-efficient, uses less memory, and in some situations runs faster. For applications with simple
+to average complexity, it is a good enough solution to have one sequential logic in a loop. Especially considering bare-metal programs are more
+power-efficient and use less memory. However, your application can very easily get quite complex in terms of maintaining the architecture as sequential
+logic. This is where using a real-time operating system (RTOS) becomes advantageous.
+
+#### RTOS
+
+Designing your application on top of an operating system allows you to have multiple concurrent logics in your application running in different
+execution units called threads, making your architecture simple, as opposed to just one sequential logic running in your main function in standalone mode.</br>
+
+The core of an RTOS is called the kernel and controls everything in the system. The other big added advantage is the huge resources of libraries,
+drivers, and protocol stacks that are natively available by an RTOS like Zephyr.</br>
+
+Interrupt Service Routines (ISRs) are available in both RTOS-based applications and bare-metal applications. They are generated asynchronously by the
+different devices drivers configured(including callback functions) and protocols stacks.</br>
+
+Having the main() function is optional in Zephyr RTOS-based applications. This is because the main thread automatically spawned by the RTOS will do
+the necessary RTOS initialization, including scheduler/kernel setup, and core drivers setup.
+
+### Zephyr RTOS basics
+
+#### Threads
+
+A thread is the smallest logical unit of execution for the RTOS scheduler (covered later in this topic) that is competing for the CPU time.
+
+- Running: The running thread is the one that is currently being executed by the CPU.
+
+- Runnable: A thread is marked as “Runnable” when it has no other dependencies with other threads or other system resources to proceed further in execution.
+The only resource this thread is waiting for is the CPU time, also known as “Ready” state.
+
+- Non-runnable: A thread that has one or more factors that prevent its execution is deemed to be unready, and cannot be selected as the current thread.
+This can, for example, be because they are waiting for some resource that is not yet available or they have been terminated or suspended,
+also known as “Unready” state.
+
+#### System threads
+
+Thread that is spawned automatically by Zephyr RTOS during initialization.
+
+- Main thread - executes the necessary RTOS initializations and calls the application’s main() function, if it exists.
+
+- Idle thread - runs when there is no other work to do.
+
+#### User-created threads
+
+User can define their own threads to assign tasks to.
+For example, a user can create a thread to delegate reading sensor data, another thread to process data, and so on.
+
+#### Workqueue threads
+
+`Common execution unit` in `nRF Connect SDK` is a `work item`, which is nothing more than a user-defined function that gets called by a dedicated thread
+called a `workqueue thread`.
+
+The main use of this is to offload non-urgent work from an ISR or a high-priority thread to a lower priority thread.
+You do not need to create and initialize a workqueue if submitting work items to the system workqueue.
+ISR or high priority thread submits work into a workqueue, and the dedicated workqueue thread pulls out a work item in a first in, first out (FIFO) order.
+
+#### Threads Priority
+
+Threads are assigned an integer value to indicate their priority, which can be either negative or non-negative.
+
+A thread with a `negative priority` is classified as a `cooperative thread` (`CONFIG_NUM_COOP_PRIORITIES` and is, by default, equal to 16).
+Thread with a `non-negative priority` is classified as a `preemptible thread` (`CONFIG_NUM_PREEMPT_PRIORITIES` and is, by default, equal to 15).
+
+#### Scheduler
+
+The scheduler is the part of the RTOS responsible for scheduling which tasks are running, i.e using CPU time, at any given time.
+It does this using a scheduling algorithm to determine which task should be the next to run.
+
+##### Rescheduling point
+
+Zephyr RTOS is by default a tickless RTOS. A tickless RTOS is completely event-driven, which means that instead of having periodic timer interrupts
+to wake up the scheduler, it is woken based on events known as rescheduling points.</br>
+
+Rescheduling points are:
+
+- When a thread calls `k_yield()`, the thread’s state is changed from “Running” to “Ready”.
+- Unblocking a thread by giving/sending a kernel synchronization object like a semaphore, mutex or alert, causes the thread’s state to be changed from
+“Unready” to “Ready”.
+- When a receiving thread gets new data from other threads using data passing kernel objects, the data receiving thread’s state is changed from
+“Waiting” to “Ready”.
+- When time slicing is enabled and the thread has run continuously for the maximum time slice time allowed, the thread’s state
+is changed from “Running” to “Ready”.
+
+#### ISR
+
+Interrupt Service Routines (ISRs) are generated asynchronously by the device drivers and protocol stacks.
+They are not scheduled (This includes callback functions).
+ISRs preempt the execution of the current thread, allowing the response to occur with very low overhead.
+
+### Create application with threads
+
+1. Define the stack size and scheduling priority of the two threads that we will use when defining them.
+
+      ```cpp
+      #define STACKSIZE 1024 // Stack sizes should always be a power of two (512, 1024, 2048, etc.).
+      #define THREAD0_PRIORITY 7
+      #define THREAD1_PRIORITY 7
+      ```
+
+2. Define the threads
+
+      ```cpp
+      void thread1(void)
+      {
+      while (1) {
+         printk("Hello, I am thread1\n");
+
+         k_yield(); // Set to lower priority and allow to run other threads
+         // OR set thread to sleep
+         //k_msleep(5);
+         }
+      }
+      // ...
+      ```
+
+3. Initialize threads
+
+      ```cpp
+      K_THREAD_DEFINE(thread0_id, STACKSIZE, thread0, NULL, NULL, NULL,
+            THREAD0_PRIORITY, 0, 0);
+      K_THREAD_DEFINE(thread1_id, STACKSIZE, thread1, NULL, NULL, NULL,
+            THREAD1_PRIORITY, 0, 0);
+      ```
+
+4. If threads cannot sleep or yield, enable timeslicing in prj.conf to prevent starvation
+
+      The scheduler will preempt the running thread after the configured amount of time (10 ms in this case) regardless of what it is doing
+
+      ```sh
+      CONFIG_TIMESLICING=y
+      CONFIG_TIMESLICE_SIZE=10
+      CONFIG_TIMESLICE_PRIORITY=0
+      ```
+
+      The scheduler will check and preempt only equal priority thread, thus if we will use code below, thread0 will starve thread1 forever
+
+      ```cpp
+      #define THREAD0_PRIORITY 6
+      #define THREAD1_PRIORITY 7
+      ```
+
+### Workqueue creation
+
+1. Define threads with different priorities
+
+      ```cpp
+      #define THREAD0_PRIORITY 2 
+      #define THREAD1_PRIORITY 3
+      #define WORKQ_PRIORITY   4
+      ```
+
+2. Create threads with delta times
+
+      ```cpp
+      static inline void emulate_work()
+      {
+         for(volatile int count_out = 0; count_out < 150000; count_out ++);
+      }
+
+      void thread0(void)
+      {
+         uint64_t time_stamp;
+         int64_t delta_time;
+         while (1) {
+            time_stamp = k_uptime_get();
+            emulate_work();
+            delta_time = k_uptime_delta(&time_stamp);
+            printk("thread0 yielding this round in %lld ms\n", delta_time);
+            k_msleep(20);
+         }
+      }
+      ```
+
+      Offload work from high priority task if necessary
+
+      ```cpp
+      struct work_info {
+         struct k_work work;
+         char name[25];
+      } my_work;
+
+      void offload_function(struct k_work *work_tem)
+      {
+         emulate_work();
+      }
+
+      k_work_queue_start(&offload_work_q, my_stack_area,
+                        K_THREAD_STACK_SIZEOF(my_stack_area), WORKQ_PRIORITY,
+                        NULL);
+      strcpy(my_work.name, "Thread0 emulate_work()");
+      k_work_init(&my_work.work, offload_function);
+
+      k_work_submit_to_queue(&offload_work_q, &my_work.work);
+      ```
