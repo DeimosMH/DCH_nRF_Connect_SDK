@@ -980,6 +980,8 @@ the scheduler
 
 ### Bare-metal vs RTOS-based application
 
+RTOS applications allow for multiple concurrent logics while bare-metal applications runs sequential logic.
+
 #### Bare-metal
 
 A bare-metal application, at its core, is just a big loop in the main function right after you have initialized the hardware/software at the device
