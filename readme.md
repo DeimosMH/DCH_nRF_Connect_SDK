@@ -19,4 +19,4 @@ Documentation of Daily Coding Habit (subrepository) course, made with mkDocs.
 ## Auto deploy - gh-pages
 
 [TO-DO../DCH_CppPrimerPlus/mkdocs.yml]
-[Daily Coding Habit: nRF Connect SDK](https://deimosmh.github.io/nRF_Connect_SDK/)
+[Daily Coding Habit: nRF Connect SDK](https://deimosmh.github.io/DCH_nRF_Connect_SDK/)

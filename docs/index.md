@@ -165,6 +165,11 @@ DT_PROP(DT_NODELABEL(subnode-label), foo)
 
 Device tree file is available in path: `<install_path>\zephyr\boards\arm\nrf52833dk_nrf52833\nrf52833dk_nrf52833.dts.`
 
+```sh
+cd /home/deimos/ncs/v2.5.0-rc2/zephyr/boards/arm/nrf52dk_nrf52832
+code ./nrf52dk_nrf52832.dts
+```
+
 ### Device driver model
 
 In order to interact with a hardware peripheral or a system block, we need to use a device driver (or driver for short), which is software that deals
@@ -739,54 +744,102 @@ Asynchronous API - the most efficient way to use UART, it allows to read and wri
 
 2. Define callback function
 
-The callback function should have the following signature:
+      The callback function should have the following signature:
 
-```cpp
-
-static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
-{
-	switch (evt->type)
-	{
-	case UART_TX_DONE:
-		// do something
-		break;
-	case UART_TX_ABORTED:
-		// do something
-		break;
-	case UART_RX_RDY:
-		// do something
-		break;
-	case UART_RX_BUF_REQUEST:
-		// do something
-		break;
-	case UART_RX_BUF_RELEASED:
-		// do something
-		break;
-	case UART_RX_DISABLED:
-		// do something
-		break;
-	case UART_RX_STOPPED:
-		// do something
-		break;
-	default:
-		break;
-	}
-}
-```
+      ```cpp
+      static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
+      {
+         switch (evt->type)
+         {
+            case UART_TX_DONE:
+            // do something
+            break;
+            case UART_TX_ABORTED:
+            // do something
+            break;
+            case UART_RX_RDY:
+            // do something
+            break;
+            case UART_RX_BUF_REQUEST:
+            // do something
+            break;
+            case UART_RX_BUF_RELEASED:
+            // do something
+            break;
+            case UART_RX_DISABLED:
+            // do something
+            break;
+            case UART_RX_STOPPED:
+            // do something
+            break;
+            default:
+            break;
+         }
+      }
+      ```
 
 3. Register the callback function by calling the function `uart_callback_set()`, which takes three parameters.
 
-```cpp
-	err = uart_callback_set(uart, uart_cb, NULL);
-		if (err) {
-			return err;
-		}
-```
+      ```cpp
+      err = uart_callback_set(uart, uart_cb, NULL);
+      if (err) {
+         return err;
+      }
+      ```
 
 #### Receive data
 
 1. Declare a receive buffer to store the incoming data.
 
+      ```cpp
+      static uint8_t rx_buf[10] = {0}; //A buffer to store incoming UART data
+      ```
+
+2. To start receiving, call the uart_rx_enable() function, and pass the address of the receive buffer.
+
+      ```cpp
+      uart_rx_enable(uart, rx_buf, sizeof(rx_buf), 100);
+      ```
+
+3. The data received is accessible through the UART callback on the UART_RX_RDY event.
+`evt->data.rx.len`, `evt->data.rx.offset`, `evt->rx.buf[rx.offset]`, `evt->rx.buf[rx.offset+rx.len]`
+
+4. Continuous reception is not enabled by default. Once the receive buffer is full, you must manually enable reception.
+
+      ```cpp
+      case UART_RX_DISABLED:
+         uart_rx_enable(dev, rx_buf, sizeof(rx_buf), 100);
+         break;
+      ```
+
+#### Transmit data
+
+1. Define a transmission buffer to hold the data to be sent.
+
+   ```cpp
+   static uint8_t tx_buf[] =  {"nRF Connect SDK Fundamentals Course \n\r"};
+   ```
+
+2. Call the function `uart_tx()` to send the data over UART.
+
+   ```cpp
+   err = uart_tx(uart, tx_buf, sizeof(tx_buf), SYS_FOREVER_US);
+   if (err) {
+      return err;
+   }
+   ```
+
+   The function returns immediately and the sending is actually managed internally by the UART driver.
+
+If your application needs to take action once the whole transmission buffer is transmitted, you could do that by using the `UART_TX_DONE` event
+in the UART callback function.
+
 ```cpp
-static uint8_t rx_buf[10] = {0}; //A buffer to store incoming UART data
+case UART_TX_DONE:
+  // Do something here if needed  
+  break;
 ```
+
+UART driver in nRF Connect SDK doesn't support interrupts.</br>
+CTS stands for clear to send and is used when hardware flow control is enabled to receive the other module’s RTS (ready to send) signal to indicate
+that it can begin sending data.</br>
