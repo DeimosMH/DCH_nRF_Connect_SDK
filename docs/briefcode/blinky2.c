@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2016 Intel Corporation
- *
- * SPDX-License-Identifier: Apache-2.0
- * Note: 
- * Tested on nRF Connect SDK Version : 2.0
- */
 
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
@@ -28,7 +21,6 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 {
     gpio_pin_toggle_dt(&led);
 }
-
 /* STEP 5 - Define a variable of type static struct gpio_callback */
 static struct gpio_callback button_cb_data;
 

@@ -471,7 +471,7 @@ void main(void)
 
 ### Adding custom configurations
 
-create a file called Kconfig in the application directory (the same location as CMakeLists.txt and prj.conf). Make sure the file does not have a file extension.
+Create a file called `Kconfig` in the application directory (the same location as CMakeLists.txt and prj.conf). Make sure the file does not have a file extension.
 
 ```sh
 source "Kconfig.zephyr"
