@@ -1182,3 +1182,252 @@ ISRs preempt the execution of the current thread, allowing the response to occur
 
       k_work_submit_to_queue(&offload_work_q, &my_work.work);
       ```
+
+## Lesson 8 - Thread synchronization
+
+Need for thread synchronization and how to use semaphores and mutexes as thread synchronization mechanisms.
+
+Objective:
+
+- Understand the need for thread synchronization mechanisms
+- Learn the basic properties of semaphores and mutexes
+- Practice through hands-on exercises how to use semaphores and mutexes for thread synchronization
+
+If more than one thread tries to access the same piece of code simultaneously, usually referred to as the critical section, this can lead to unexpected
+or erroneous behavior. Two mechanisms you can utilize to achieve thread synchronization are semaphores or mutexes.
+
+- Semaphores have a maximum value that is set at initialization
+- Mutexes have ownership property, i.e only the thread incrementing its value can decrement it, until zero when it is relinquished.
+
+### Semaphores
+
+In its simplest form, a semaphore is merely a plain variable that is changed, indicating the status of the common resource. Semaphores can be seen as
+a resource-sharing mechanism, where you have a finite instance of a resource that you want to manage access for multiple threads.
+They are more of a signaling mechanism used to control access to a given number of instances of a resource.
+
+Semaphores have the following properties:
+
+- At initialization, you set an initial count (greater than 0) and a maximum limit.
+- “Give” will increment the semaphore count unless the count is already at the maximum limit, in which case the signal will not increment.
+“Give” can be done from any thread or ISR.
+- “Take” will decrement the semaphore count unless the semaphore is unavailable (count at zero). Any thread that is trying to take a semaphore that is
+unavailable needs to wait until some other thread makes it available (by giving the semaphore). “Take” can be done only in threads and not in ISR
+(since ISRs should not block on anything).
+- There is no ownership of semaphores. This means a semaphore can be taken by one thread and can be given by any thread. It is not necessary that the
+thread that has taken the semaphore is the one to give it.
+- The thread taking the semaphore is NOT eligible for priority inheritance since the taking thread does not own the semaphore and any other thread can
+give the semaphore.
+
+<img src="./assets/semaphore.png" alt="Image description"
+style="display: block; margin: auto; width: 65%; height: auto; border-radius: 8px; background: white;">
+
+### Mutexes
+
+As opposed to semaphores, mutexes can only take two values, commonly referred to as locked or unlocked. Additionally, mutexes have ownership properties
+in the sense that only the thread that locks the mutex can unlock it. Think of it as a locking/unlocking mechanism with a single key, where a thread
+wishing to gain access to a single object. For instance, a code section or a resource needs to first gain access to an unlocked mutex, lock it and then
+access the object. If the thread trying to gain access to the mutex sees that the mutex is already locked, then the thread gets blocked and will wait until
+the mutex is unlocked by the thread that locked it.
+
+A typical use of a mutex is to protect a critical section of the code that can be accessed from multiple threads. The critical section is a piece of
+code that needs to be completed without interruptions from other threads, or else the global/static data within that critical section could be
+misrepresented or get corrupted
+
+Mutexes have the following properties:
+
+- Locking a mutex will increment the lock count. Recursive locking (reentrant locking) will not make the locking thread block since it already owns
+ the mutex. The thread should make sure that it unlocks the mutex the same number of times that it locked it to release the mutex so that other threads
+ can attempt to own it.
+- Unlocking a mutex will decrement the lock count. When the lock count is zero, that means that the mutex is in an unlocked state.
+Threads can attempt to own the mutex only when the mutex is in an unlocked state.
+- Only the thread that locked the mutex can unlock it.
+- Mutexes locking and unlocking can only be done in threads and not in ISRs. This is because ISRs cannot participate in the ownership and priority
+inheritance mechanism of the scheduler.
+- The thread locking the mutex is eligible for priority inheritance since only that thread can unlock the mutex.
+
+<img src="./assets/mutex.png" alt="Image description"
+style="display: block; margin: auto; width: 65%; height: auto; border-radius: 8px; background: white;">
+
+### Use semaphores
+
+1. Set the priority of the producer and consumer thread.
+
+      ```cpp
+      #define PRODUCER_PRIORITY        5 
+      #define CONSUMER_PRIORITY        4
+      ```
+
+2. Initialize the number of instances of the limited resource to be 10 (just assume that we have 10 instances of that resource).
+
+      ```cpp
+      volatile uint32_t available_instance_count = 10;
+      ```
+
+3. Create the producer thread that just releases the resource without any checks and sleeps for a random (500-509ms) amount of time.
+When it wakes up from this sleep, it repeats this step in a loop indefinitely.
+
+      ```cpp
+      void producer(void)
+      {
+         printk("Producer thread started\n");
+         while (1) {
+            release_access();
+            // Assume the resource instance access is released at this point
+            k_msleep(500 + sys_rand32_get() % 10);
+         }
+      }
+      ```
+
+4. Create the consumer thread that gets access to the resource without any checks and assumes to get access before it goes to sleep for a random (0-9ms)
+amount of time. When it wakes up, it repeats this step in a loop indefinitely.
+
+      ```cpp
+      void consumer(void)
+      {
+         printk("Consumer thread started\n");
+         while (1) {
+            get_access();
+            // Assume the resource instance access is released at this point
+            k_msleep(sys_rand32_get() % 10);
+         }
+      }
+      ```
+
+5. Decrement the available resource in `get_access()` function.
+
+      ```cpp
+      available_instance_count--;
+      printk("Resource taken and available_instance_count = %d\n",  available_instance_count);
+      ```
+
+6. Increase the available resource in `release_access()` function.
+
+      ```cpp
+      available_instance_count++;
+      printk("Resource given and available_instance_count = %d\n", available_instance_count);
+      ```
+
+      `If you compile and build project here - count will print negative numbers (which shouldnt happen with physical resource)`
+
+7. Add a semaphore by first defining the semaphore using `K_SEM_DEFINE()`
+
+      ```cpp
+      K_SEM_DEFINE(instance_monitor_sem, 10, 10);
+      ```
+
+8. Before accessing the resource, take the semaphore using `k_sem_take()` in `get_access()`.
+
+      ```cpp
+      k_sem_take(&instance_monitor_sem, K_FOREVER);
+      ```
+
+9. After finishing accessing the resource release the semaphore using `k_sem_give()` in `release_access()`.
+
+      ```cpp
+      k_sem_give(&instance_monitor_sem);
+      ```
+
+`Consumer` thread starts accessing all of the 10 resources very quickly but is forced to wait when the resource count becomes 0.
+The `consumer` thread is then blocked until the `producer` thread gives the semaphore and the resource becomes available, unblocking the `consumer` thread.
+
+### Use mutexes
+
+Two threads running and accessing the same code section of code. The logic looks perfect when only one thread is accessing the critical section, but when
+two different threads try to access the code section simultaneously, unexpected things happen(Race condition).
+
+1. Enable multithreading in the application in prj.conf
+(This configuration defaults to yes in all nRF Connect SDK applications and isn’t strictly necessary to enable manually);
+
+      ```sh
+      CONFIG_MULTITHREADING=y
+      ```
+
+2. Set the priority of threads to have equal priority.
+
+      ```cpp
+      #define THREAD0_PRIORITY        4 
+      #define THREAD1_PRIORITY        4
+      ```
+
+3. Create the functions for the two threads.
+
+      ```cpp
+      void thread0(void)
+      {
+         printk("Thread 0 started\n");
+         while (1) {
+            shared_code_section();
+         }
+      }
+      void thread1(void)
+      {
+         printk("Thread 1 started\n");
+         while (1) {
+            //shared_code_section(); 
+         }
+      }
+      ```
+
+4. Define variables and implement logic in `shared_code_section()`.
+
+      ```cpp
+      #define COMBINED_TOTAL   40
+      int32_t increment_count = 0;
+      int32_t decrement_count = COMBINED_TOTAL;
+
+      void shared_code_section(){
+         increment_count += 1;
+         increment_count = increment_count % COMBINED_TOTAL;
+         decrement_count -= 1;
+         if (decrement_count == 0)
+         {
+            decrement_count = COMBINED_TOTAL;
+         }
+      }
+      ```
+
+5. Check for `race condition` in shared_code_section.
+
+      ```cpp
+      if(increment_count + decrement_count != COMBINED_TOTAL )
+         {
+            printk("Race condition happend!\n");
+            printk("Increment_count (%d) + Decrement_count (%d) = %d \n",
+                        increment_count, decrement_count, (increment_count + decrement_count));
+            k_msleep(400 + sys_rand32_get() % 10);
+         }
+      ```
+
+      `If you compile and build project here - race condition will not happen, as thread1 is commented`
+
+6. let thread1 access `shared_code_section()`
+
+      ```cpp
+      void thread1(void)
+      {
+         printk("Thread 1 started\n");
+         while (1) {
+            shared_code_section();
+         }
+      }
+      ```
+
+      `If you compile and build project here - race condition will happen`
+
+7. Define `mutex`
+
+      ```cpp
+      K_MUTEX_DEFINE(test_mutex);
+      ```
+
+8. Lock mutex before logic in `shared_code_section()`
+
+      ```cpp
+      k_mutex_lock(&test_mutex, K_FOREVER);
+      ```
+
+9. Unlock it right before if-statement checking race condition.
+
+      ```cpp
+      k_mutex_unlock(&test_mutex);
+      ```

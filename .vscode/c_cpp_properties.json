@@ -35,7 +35,8 @@
                 "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/kernel.h",
                 "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/syscall.h",
                 "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/sys/kobject.h",
-                "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/drivers/i2c.h"
+                "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/drivers/i2c.h",
+                "/home/deimos/ncs/v2.5.0-rc2/zephyr/include/zephyr/random/rand32.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
