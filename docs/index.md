@@ -1,5 +1,8 @@
 # nRF Connect SDK Fundamentals
 
+[nRF Connect SDK Course](https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/)</br>
+[nRF BLE Course](https://academy.nordicsemi.com/courses/bluetooth-low-energy-fundamentals/)</br></br>
+
 [Documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/index.html)</br>
 [API GPIO documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/hardware/peripherals/gpio.html)</br>
 [Logging documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/services/logging/index.html#logging-api)</br>
