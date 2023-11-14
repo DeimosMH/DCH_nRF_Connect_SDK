@@ -62,3 +62,37 @@ style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8p
 - 1M PHY - classic 1 Megabit PHY supported by all Bluetooth
 - 2M PHY - 2 Megabit PHY is supported Bluetooth v5.0, decreased battery usage with less communication range
 - Coded PHY - longer communication range by sacrificing data rate
+
+### Advertising types
+
+- Connectable vs. non-connectable: Determines whether the central can connect to the peripheral or not.
+- Scannable vs. non-scannable: Determines if the peripheral accepts scan requests from a scanner.
+- Directed vs. undirected: Determines whether advertisement packets are targeted to a specific scanner or not.
+
+`Scannable and connectable (ADV_IND)`
+`Directed connectable (ADV_DIRECT_IND)`
+`Non-connectable and scannable (ADV_SCAN_IND)`
+`Non-connectable and non-scannable (ADV_NONCONN_IND)`
+
+### Advertisement packet
+
+Protocol Data Unit (PDU) consists of either an advertising PDU (advertising channel PDU) or a data PDU (channel PDU)
+
+<img src="./assets/advPackets.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;">
+
+The advertisement payload structure depends on the kind of advertising being used. For example, when doing directed advertisement, some
+space is needed to also specify the receiver’s address.
+
+## Connection process
+
+### Disconnected by supervision timeout
+
+The other reason a device may disconnect is if it stops responding to packets. There can be several reasons for this. Either the application on the
+connected device crashed and reset (which is not too uncommon, especially during the development phase), the connected device ran out of battery, or
+the connected device was taken out of radio range. The amount of time it takes before the connection times out is set by the connection supervision
+timeout parameter, which we will discuss in more detail in the next topic.
+
+- The `MTU` is the number of bytes that can be sent in one GATT operation (for example, a send operation), while `data length` is the number of bytes
+that can be sent in one Bluetooth LE packet.
+`MTU` has a default value of `23 bytes`, and `data length` has a default value of `27 bytes`.
