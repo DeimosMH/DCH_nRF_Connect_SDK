@@ -86,6 +86,10 @@ space is needed to also specify the receiver’s address.
 
 ## Connection process
 
+When the central sends a connection request, the peripheral and central have established a bi-directional connection (connection-oriented) channel.
+
+connection interval in Bluetooth LE - The interval at which the devices wake up to exchange data
+
 ### Disconnected by supervision timeout
 
 The other reason a device may disconnect is if it stops responding to packets. There can be several reasons for this. Either the application on the
@@ -96,3 +100,81 @@ timeout parameter, which we will discuss in more detail in the next topic.
 - The `MTU` is the number of bytes that can be sent in one GATT operation (for example, a send operation), while `data length` is the number of bytes
 that can be sent in one Bluetooth LE packet.
 `MTU` has a default value of `23 bytes`, and `data length` has a default value of `27 bytes`.
+
+## Data exchange in Bluetooth LE
+
+Closer look at the Generic Attribute Protocol (GATT), its underlayer Attribute Protocol (ATT).
+Learn how to represent and exchange data between two connected Bluetooth LE devices using different GATT operations.
+
+### Client-initiated operations
+
+GATT operations where the client requests data from the GATT server.
+
+Operation used byclient to retrieve services: service discovery,service discovery operation,discovery
+
+- Read - read request to the server. To which the server responds by returning the attribute value.
+- Write - sends a write request and provides data that matches the same format of the target attribute. If the server accepts the write operation,
+it responds with an acknowledgement.
+- Write without response - client can write data to an attribute without waiting for an acknowledgment from the server.
+
+### Server-initiated operations
+
+These operations are initiated by the server, but the client is required to enable them first by subscribing to the characteristic and enabling either
+notifications or indications.
+
+- Notify - server automatically push the value of a certain attribute to the client, without the client asking for it.
+- Indicate - Indicate will also push the attribute value directly to the client. However, in this case, an acknowledgment from the client is required
+(for this you can only send one Indication per connection interval)
+
+## Services and characteristics
+
+ATT layer defines attributes and how data is exposed between a client and a server.
+
+### Attributes
+
+ATT layer defines how data is stored and accessed in a server’s database.
+Data is stored in the form of data structures called Attributes.
+
+<img src="./assets/att_server.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;">
+
+- Handle: A 16-bit unique index to a specific attribute in the attribute table, assigned by the stack.
+- Type (UUID): Universally unique ID (UUID), which tells us the attribute type.
+- Permissions: The security level required (encryption and/or authorization) to handle that attribute, in addition to indicating whether it’s a
+readable and/or writeable attribute.
+- Value:
+  - User data (ex: sensor reading) that is stored in the attribute. This field accepts any data type.
+  - It can also hold information (metadata) about another attribute.
+
+### Universally unique ID (UUID)
+
+It is a unique number used to identify attributes and tells us about their significance. UUIDs have two types.
+
+- SIG-defined 16-bit UUID.
+- 128-bit UUID, sometimes referred to as a vendor-specific UUID. This is the type of UUID you need to use when you are making your own custom
+services and characteristics.
+
+### Services
+
+Attributes are the main building blocks for services.
+
+- service definition - is comprised of multiple attributes arranged in a GATT-specified format which facilitates standardized data exchange between
+Bluetooth LE devices. Service definitions always start with a service declaration attribute.
+- service declaration attribute - holds metadata about the service, it also indicates the beginning of a service in the sequence of services stored
+on a GATT server.
+- characteristic declaration attribute - characteristic is comprised of at least two attributes and optionally more.
+Characteristic definition starts with a declaration attribute, to indicate the beginning of a characteristic in the sequence of characteristics in a
+service definition attributes:
+  - Characteristic declaration attribute: Holds metadata about the Characteristic Value Attribute.
+    - Characteristic properties: What kind of GATT operations are permitted on this characteristic.
+    - Characteristic value handle: The handle (address) of the attribute that contains the user data (value), i.e the characteristic value attribute.
+    - Characteristic UUID: The UUID of the characteristic being declared.
+  - Characteristic value attribute: Holds the actual user data.
+  - Characteristic descriptor attribute (optional): Holds more metadata about the characteristic (GATT-defined Client Characteristic Configuration
+  Descriptor (CCCD) is the most commonly used)
+    - CCCD is a specific type of characteristic descriptor that is necessary when the characteristic supports server-initiated operations
+    (i.e Notify and Indicate). This is a writable descriptor that allows the GATT client to enable and disable notifications or indications for that
+    characteristic.
+
+A service can have zero or more characteristic definitions (commonly referred to as characteristics).
+A characteristic is comprised of at least two attributes and optionally more.
