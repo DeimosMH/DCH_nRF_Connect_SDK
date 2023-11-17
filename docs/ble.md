@@ -2,6 +2,10 @@
 
 [Zephyr Bluetooth Host](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/connectivity/bluetooth/bluetooth-arch.html#host)
 
+[nRF Sniffer](https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_sniffer_ble%2FUG%2Fsniffer_ble%2Fintro.html)
+
+[Wireshark](https://www.wireshark.org/docs/wsug_html_chunked/ChBuildInstallUnixInstallBins.html#_installing_from_debs_under_debian_ubuntu_and_other_debian_derivatives)
+
 ## Fundamentals
 
 <img src="./assets/BLEprotocolStack.png" alt="Image description"
@@ -224,4 +228,13 @@ The only data exchanged between the peers is the public keys. The use of the ECD
 
 Accepting only connection from whitelist
 
+## BLE Sniffer
 
+Intercept the Bluetooth LE packets as they are transmitted, ie. “sniff” the packets, and view them in real-time.
+
+After **WireShark** installation, download **nRF sniffer** and configure it: [configuration instruction](https://infocenter.nordicsemi.com/index.jsp?topic=/ug_sniffer_ble/UG/sniffer_ble/intro.html) 
+
+
+  <img src="./assets/nrf_sniffer.png" alt="Image description"
+  style="display: block; margin: auto; width: 75%; height: auto; border-radius: 8px;">
+  
