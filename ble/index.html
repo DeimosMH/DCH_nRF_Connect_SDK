@@ -1,0 +1,993 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../briefcode/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.9">
+    
+    
+      
+        <title>Bluetooth Low Energy - nRF Connect SDK Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.78cf6014.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings1.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bluetooth-low-energy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="nRF Connect SDK Course Notes" class="md-header__button md-logo" aria-label="nRF Connect SDK Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            nRF Connect SDK Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bluetooth Low Energy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_3" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode purple"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode purple" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_3">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  nRF Connect SDK Fundamentals
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Bluetooth Low Energy
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../briefcode/" class="md-tabs__link">
+        
+  
+    
+  
+  Brief of all code/config
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="nRF Connect SDK Course Notes" class="md-nav__button md-logo" aria-label="nRF Connect SDK Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    nRF Connect SDK Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nRF Connect SDK Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Bluetooth Low Energy
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Bluetooth Low Energy
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#host" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-topologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network topologies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#att-gatt" class="md-nav__link">
+    <span class="md-ellipsis">
+      ATT &amp; GATT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phy-physical-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHY - Physical Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advertising-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advertising types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advertisement-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advertisement packet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disconnected-by-supervision-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disconnected by supervision timeout
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-exchange-in-bluetooth-le" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data exchange in Bluetooth LE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data exchange in Bluetooth LE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-initiated-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client-initiated operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-initiated-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server-initiated operations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-and-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services and characteristics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Services and characteristics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#universally-unique-id-uuid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Universally unique ID (UUID)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-in-ble" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security in BLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security in BLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pairing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pairing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacy-pairing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Pairing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-secure-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      LE Secure Connections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security concerns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Levels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-accept-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter Accept List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ble-sniffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      BLE Sniffer
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../briefcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Brief of all code/config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="bluetooth-low-energy">Bluetooth Low Energy</h1>
+<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/connectivity/bluetooth/bluetooth-arch.html#host">Zephyr Bluetooth Host</a></p>
+<p><a href="https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_sniffer_ble%2FUG%2Fsniffer_ble%2Fintro.html">nRF Sniffer</a></p>
+<p><a href="https://www.wireshark.org/docs/wsug_html_chunked/ChBuildInstallUnixInstallBins.html#_installing_from_debs_under_debian_ubuntu_and_other_debian_derivatives">Wireshark</a></p>
+<h2 id="fundamentals">Fundamentals</h2>
+<p><img src="./assets/BLEprotocolStack.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<h3 id="host">Host</h3>
+<p>The Bluetooth LE host consists of the following layers:</p>
+<ul>
+<li>Logical Link Control &amp; Adaptation Protocol (L2CAP): provides data encapsulation services to the upper layers.</li>
+<li>Security Manager Protocol (SMP): defines and provides methods for secure communication.</li>
+<li>Attribute Protocol (ATT): allows a device to expose certain pieces of data to another device.</li>
+<li>Generic Attribute Profile (GATT): defines the necessary sub-procedures for using the ATT layer.</li>
+<li>Generic Access Profile (GAP): interfaces directly with the application to handle device discovery and connection-related services.</li>
+</ul>
+<p>The Zephyr Bluetooth Host implements all these layers and provides an API for applications.</p>
+<h3 id="controller">Controller</h3>
+<p>The Bluetooth LE controller is comprised of the following layers:</p>
+<ul>
+<li>Physical Layer (PHY): determines how the actual data is modulated onto the radio waves, and how it is transmitted and received.</li>
+<li>Link Layer (LL): manages the state of the radio, defined as one of the following – standby, advertising, scanning, initiating, connection.</li>
+</ul>
+<h3 id="definitions">Definitions</h3>
+<ul>
+<li>Advertising: The process of transmitting advertising packets, either just to broadcast data or to be discovered by another device.</li>
+<li>Scanning: The process of listening for advertising packets.</li>
+<li>Central: A device role that scans and initiates connections with peripherals.</li>
+<li>Peripheral: A device role that advertises and accepts connections from centrals.</li>
+<li>Broadcaster: A special kind of peripheral that broadcasts advertisement packets without accepting any connection requests.</li>
+<li>Observer: A special kind of central that listens to advertising packets without initiating a connection.</li>
+</ul>
+<h3 id="network-topologies">Network topologies</h3>
+<ul>
+<li><code>Broadcast</code> data transfer happens without the devices ever establishing a connection. This is done by using the advertisement packets to broadcast
+the data to any device that is in range to receive the packets.</li>
+<li><code>Connected</code> network topology establishes a connection before data transfer occurs. Unlike the broadcast topology, the communication is now bidirectional.</li>
+<li><code>Multi-role</code> A single device can also operate in multiple different roles simultaneously. For instance, the same device can act as a peripheral in
+one setting, and a central in another.</li>
+</ul>
+<h3 id="att-gatt">ATT &amp; GATT</h3>
+<ul>
+<li>Attribute Protocol - ATT layer is the basis on which data is transmitted, received, and handled in the connection phase of Bluetooth LE devices.
+It is based on a client-server architecture.</li>
+<li>GATT server: Device that stores data and provides methods for the GATT client to access the data.</li>
+<li>GATT client: Device that accesses the data on the GATT server, through specific GATT operations which will be explained in Lesson 4.</li>
+<li>
+<p>Attribute: A standardized data representation format defined by the ATT protocol</p>
+</li>
+<li>
+<p>Generic Attribute Profile - GATT layer sits directly on top of the ATT layer, and builds on it by hierarchically classifying attributes into profiles,
+services and characteristics. The GATT layer uses these concepts to govern the data transfer between Bluetooth LE devices.</p>
+</li>
+</ul>
+<p><img src="./assets/GATT.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<h3 id="phy-physical-layer">PHY - Physical Layer</h3>
+<ul>
+<li>1M PHY - classic 1 Megabit PHY supported by all Bluetooth</li>
+<li>2M PHY - 2 Megabit PHY is supported Bluetooth v5.0, decreased battery usage with less communication range</li>
+<li>Coded PHY - longer communication range by sacrificing data rate</li>
+</ul>
+<h3 id="advertising-types">Advertising types</h3>
+<ul>
+<li>Connectable vs. non-connectable: Determines whether the central can connect to the peripheral or not.</li>
+<li>Scannable vs. non-scannable: Determines if the peripheral accepts scan requests from a scanner.</li>
+<li>Directed vs. undirected: Determines whether advertisement packets are targeted to a specific scanner or not.</li>
+</ul>
+<p><code>Scannable and connectable (ADV_IND)</code>
+<code>Directed connectable (ADV_DIRECT_IND)</code>
+<code>Non-connectable and scannable (ADV_SCAN_IND)</code>
+<code>Non-connectable and non-scannable (ADV_NONCONN_IND)</code></p>
+<h3 id="advertisement-packet">Advertisement packet</h3>
+<p>Protocol Data Unit (PDU) consists of either an advertising PDU (advertising channel PDU) or a data PDU (channel PDU)</p>
+<p><img src="./assets/advPackets.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<p>The advertisement payload structure depends on the kind of advertising being used. For example, when doing directed advertisement, some
+space is needed to also specify the receiver’s address.</p>
+<h2 id="connection-process">Connection process</h2>
+<p>When the central sends a connection request, the peripheral and central have established a bi-directional connection (connection-oriented) channel.</p>
+<p>connection interval in Bluetooth LE - The interval at which the devices wake up to exchange data</p>
+<h3 id="disconnected-by-supervision-timeout">Disconnected by supervision timeout</h3>
+<p>The other reason a device may disconnect is if it stops responding to packets. There can be several reasons for this. Either the application on the
+connected device crashed and reset (which is not too uncommon, especially during the development phase), the connected device ran out of battery, or
+the connected device was taken out of radio range. The amount of time it takes before the connection times out is set by the connection supervision
+timeout parameter, which we will discuss in more detail in the next topic.</p>
+<ul>
+<li>The <code>MTU</code> is the number of bytes that can be sent in one GATT operation (for example, a send operation), while <code>data length</code> is the number of bytes
+that can be sent in one Bluetooth LE packet.
+<code>MTU</code> has a default value of <code>23 bytes</code>, and <code>data length</code> has a default value of <code>27 bytes</code>.</li>
+</ul>
+<h2 id="data-exchange-in-bluetooth-le">Data exchange in Bluetooth LE</h2>
+<p>Closer look at the Generic Attribute Protocol (GATT), its underlayer Attribute Protocol (ATT).
+Learn how to represent and exchange data between two connected Bluetooth LE devices using different GATT operations.</p>
+<h3 id="client-initiated-operations">Client-initiated operations</h3>
+<p>GATT operations where the client requests data from the GATT server.</p>
+<p>Operation used byclient to retrieve services: service discovery,service discovery operation,discovery</p>
+<ul>
+<li>Read - read request to the server. To which the server responds by returning the attribute value.</li>
+<li>Write - sends a write request and provides data that matches the same format of the target attribute. If the server accepts the write operation,
+it responds with an acknowledgement.</li>
+<li>Write without response - client can write data to an attribute without waiting for an acknowledgment from the server.</li>
+</ul>
+<h3 id="server-initiated-operations">Server-initiated operations</h3>
+<p>These operations are initiated by the server, but the client is required to enable them first by subscribing to the characteristic and enabling either
+notifications or indications.</p>
+<ul>
+<li>Notify - server automatically push the value of a certain attribute to the client, without the client asking for it.</li>
+<li>Indicate - Indicate will also push the attribute value directly to the client. However, in this case, an acknowledgment from the client is required
+(for this you can only send one Indication per connection interval)</li>
+</ul>
+<h2 id="services-and-characteristics">Services and characteristics</h2>
+<p>ATT layer defines attributes and how data is exposed between a client and a server.</p>
+<h3 id="attributes">Attributes</h3>
+<p>ATT layer defines how data is stored and accessed in a server’s database.
+Data is stored in the form of data structures called Attributes.</p>
+<p><img src="./assets/att_server.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<ul>
+<li>Handle: A 16-bit unique index to a specific attribute in the attribute table, assigned by the stack.</li>
+<li>Type (UUID): Universally unique ID (UUID), which tells us the attribute type.</li>
+<li>Permissions: The security level required (encryption and/or authorization) to handle that attribute, in addition to indicating whether it’s a
+readable and/or writeable attribute.</li>
+<li>Value:</li>
+<li>User data (ex: sensor reading) that is stored in the attribute. This field accepts any data type.</li>
+<li>It can also hold information (metadata) about another attribute.</li>
+</ul>
+<h3 id="universally-unique-id-uuid">Universally unique ID (UUID)</h3>
+<p>It is a unique number used to identify attributes and tells us about their significance. UUIDs have two types.</p>
+<ul>
+<li>SIG-defined 16-bit UUID.</li>
+<li>128-bit UUID, sometimes referred to as a vendor-specific UUID. This is the type of UUID you need to use when you are making your own custom
+services and characteristics.</li>
+</ul>
+<h3 id="services">Services</h3>
+<p>Attributes are the main building blocks for services.</p>
+<ul>
+<li>service definition - is comprised of multiple attributes arranged in a GATT-specified format which facilitates standardized data exchange between
+Bluetooth LE devices. Service definitions always start with a <strong>service declaration attribute</strong>.</li>
+<li>service declaration attribute - holds metadata about the service, it also indicates the beginning of a service in the sequence of services stored
+on a GATT server.</li>
+<li>characteristic declaration attribute - characteristic is comprised of at least two attributes and optionally more.
+Characteristic definition starts with a declaration attribute, to indicate the beginning of a characteristic in the sequence of characteristics in a
+service definition attributes:</li>
+</ul>
+<p><img src="./assets/CharDescAtt.png" alt="Image description"
+  style="display: block; margin: auto; width: 75%; height: auto; border-radius: 8px;"></p>
+<ul>
+<li>Characteristic declaration attribute: Holds metadata about the Characteristic Value Attribute.<ul>
+<li>Characteristic properties: What kind of GATT operations are permitted on this characteristic.</li>
+<li>Characteristic value handle: The handle (address) of the attribute that contains the user data (value), i.e the characteristic value attribute.</li>
+<li>Characteristic UUID: The UUID of the characteristic being declared.</li>
+</ul>
+</li>
+<li>Characteristic value attribute: Holds the actual user data.</li>
+<li>Characteristic descriptor attribute (optional): Holds more metadata about the characteristic (GATT-defined Client Characteristic
+  Configuration Descriptor (CCCD) is the most commonly used)<ul>
+<li>CCCD is a specific type of characteristic descriptor that is necessary when the characteristic supports server-initiated
+operations (i.e Notify and Indicate). This is a writable descriptor that allows the GATT client to enable and
+disable notifications or indications for that characteristic.</li>
+</ul>
+</li>
+</ul>
+<p>A service can have zero or more characteristic definitions (commonly referred to as characteristics).
+A characteristic is comprised of at least two attributes and optionally more.</p>
+<h2 id="security-in-ble">Security in BLE</h2>
+<ul>
+<li>Pairing: The process of generating, distributing, and authenticating keys for encryption purposes.</li>
+<li>Bonding: The process of pairing followed by distribution of keys used to encrypt the link in future reconnections.</li>
+</ul>
+<h3 id="pairing">Pairing</h3>
+<ul>
+<li>Initiation: send pairing request (only contral), peripheral sends pairing response (<code>Security Request</code> or <code>I/O capabilities</code>: DisplayOnly/DisplayTesNo/KeyboardOnly/NoInputNoOutput/KeyboardDispay)</li>
+<li>Perform pairing: Just Works (plain text, unauthenticated), Passkey Entry (6-digit), Out of Band, Numeric Comparison)</li>
+<li>Key distribution: LTK (Long Term Key) is used to distribute the rest of the keys</li>
+</ul>
+<h3 id="legacy-pairing">Legacy Pairing</h3>
+<p>Prior to Bluetooth v4.2.
+STK (Short Term Key) encrypting link can be easly cracked (999999 combinations) and have no MITM protection.</p>
+<h3 id="le-secure-connections">LE Secure Connections</h3>
+<p>Use Elliptic-Curve Diffie-Hellman (ECDH) cryptography to generate a public-private key pair.
+They will use one of the four pairing methods (Just Works, Passkey entry, OOB or Numeric Comparison)
+The only data exchanged between the peers is the public keys. The use of the ECDH public key cryptography makes it extremely difficult to crack the LTK</p>
+<h3 id="security-concerns">Security concerns</h3>
+<ul>
+<li>Identity tracking</li>
+<li>Sniffing (Passive eavesdropping)</li>
+<li>MITM (Active eavesdropping - Man-In-The-Middle attack)</li>
+</ul>
+<h3 id="security-levels">Security Levels</h3>
+<ol>
+<li>No security (open text, meaning no authentication and no encryption)</li>
+<li>Encryption with unauthenticated pairing (Just Works)</li>
+<li>Authenticated pairing with encryption (Passkey entry or OOB)</li>
+<li>Authenticated LE Secure Connections pairing with encryption</li>
+</ol>
+<p><code>Permissions</code> field  of <code>attribute</code> - determines security level of connection if accesible</p>
+<h3 id="filter-accept-list">Filter Accept List</h3>
+<p>Accepting only connection from whitelist</p>
+<h2 id="ble-sniffer">BLE Sniffer</h2>
+<p>Intercept the Bluetooth LE packets as they are transmitted, ie. “sniff” the packets, and view them in real-time.</p>
+<p>After <strong>WireShark</strong> installation, download <strong>nRF sniffer</strong> and configure it: <a href="https://infocenter.nordicsemi.com/index.jsp?topic=/ug_sniffer_ble/UG/sniffer_ble/intro.html">configuration instruction</a> </p>
+<p><img src="./assets/nrf_sniffer.png" alt="Image description"
+  style="display: block; margin: auto; width: 75%; height: auto; border-radius: 8px;"></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2023 <a href="https://github.com/deimosmh"  target="_blank" rel="noopener">Maciej Hejlasz</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/deimosmh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maciej-hejlasz/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.tabs.sticky", "navigation.top", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.6c14ae12.min.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

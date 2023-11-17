@@ -1,0 +1,2089 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="ble/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.9">
+    
+    
+      
+        <title>nRF Connect SDK Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.78cf6014.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings1.css">
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="css/print-site.css">
+    
+      <link rel="stylesheet" href="css/print-site-material.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nrf-connect-sdk-fundamentals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="nRF Connect SDK Course Notes" class="md-header__button md-logo" aria-label="nRF Connect SDK Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            nRF Connect SDK Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              nRF Connect SDK Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_3" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode purple"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode purple" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_3">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="." class="md-tabs__link">
+        
+  
+    
+  
+  nRF Connect SDK Fundamentals
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="ble/" class="md-tabs__link">
+        
+  
+    
+  
+  Bluetooth Low Energy
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="briefcode/" class="md-tabs__link">
+        
+  
+    
+  
+  Brief of all code/config
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="nRF Connect SDK Course Notes" class="md-nav__button md-logo" aria-label="nRF Connect SDK Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    nRF Connect SDK Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    nRF Connect SDK Fundamentals
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    nRF Connect SDK Fundamentals
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#devicetree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Devicetree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#device-driver-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Device driver model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpio-generic-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPIO Generic API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-example-blinky" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program example - blinky
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devicetree-overlays-cmake-and-multi-image-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Devicetree overlays, CMake, and multi-image builds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      CMake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-image-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Image Builds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      App from scratch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-custom-configurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding custom configurations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-the-devicetree-changing-the-baud-rate-at-which-information-is-sent-to-the-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying the devicetree - changing the baud rate at which information is sent to the console
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 4
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#printk" class="md-nav__link">
+    <span class="md-ellipsis">
+      printk()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logger-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logger module
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 5
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uart-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      UART Driver
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 6
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 6">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#i2c-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      I2C Protocol
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i2c-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      I2C Driver
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i2c-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      I2C Write
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i2c-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      I2C Read
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i2c-writeread" class="md-nav__link">
+    <span class="md-ellipsis">
+      I2C Write/Read
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-7-multithreaded-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 7 - Multithreaded applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 7 - Multithreaded applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bare-metal-vs-rtos-based-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bare-metal vs RTOS-based application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zephyr-rtos-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zephyr RTOS basics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-application-with-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create application with threads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workqueue-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workqueue creation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lesson-8-thread-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lesson 8 - Thread synchronization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lesson 8 - Thread synchronization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#semaphores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Semaphores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mutexes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-semaphores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use semaphores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-mutexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use mutexes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ble/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bluetooth Low Energy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="briefcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Brief of all code/config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="nrf-connect-sdk-fundamentals">nRF Connect SDK Fundamentals</h1>
+<p><a href="https://academy.nordicsemi.com/courses/nrf-connect-sdk-fundamentals/">nRF Connect SDK Course</a></br>
+<a href="https://academy.nordicsemi.com/courses/bluetooth-low-energy-fundamentals/">nRF BLE Course</a></br></br></p>
+<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/index.html">Documentation</a></br>
+<a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/hardware/peripherals/gpio.html">API GPIO documentation</a></br>
+<a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/services/logging/index.html#logging-api">Logging documentation</a></br></p>
+<p><code>RTOS</code> - serve real-time applications that process data as it comes in, typically without buffer delays. These applications include embedded systems,
+telecommunications, and industrial automation systems.</p>
+<p>The key features of an RTOS include:</p>
+<ul>
+<li>
+<p>Deterministic Scheduling: RTOSs provide deterministic scheduling, meaning that the system can predict the exact time at which a task will be executed.
+This is crucial for systems where timing is critical.</p>
+</li>
+<li>
+<p>Preemptive Scheduling: RTOSs use preemptive scheduling, which means that a high-priority task can interrupt a lower-priority task. This is important
+for systems where certain tasks must be completed before others.</p>
+</li>
+<li>
+<p>Interrupt Handling: RTOSs provide efficient interrupt handling, which is crucial for systems that need to respond quickly to external events.</p>
+</li>
+<li>
+<p>Task Prioritization: RTOSs allow tasks to be prioritized, which means that tasks can be assigned different levels of importance. This is important
+for systems where some tasks are more important than others.</p>
+</li>
+<li>
+<p>Real-Time Performance: RTOSs are designed to provide real-time performance, which means that they can process data as it comes in, typically without
+buffer delays. This is important for systems where timing is critical.</p>
+</li>
+</ul>
+<p>In conclusion, RTOSs are designed for systems where timing is critical and where tasks must be executed in a specific order. They provide features such
+as deterministic scheduling, preemptive scheduling, efficient interrupt handling, task prioritization, and real-time performance, which are crucial
+for these types of systems.</p>
+<p><code>Zephyr OS</code> is a real-time operating system (RTOS) designed for resource-constrained systems, particularly in the Internet of Things (IoT) domain.
+It is designed to be lightweight, efficient, and secure, with a focus on energy efficiency</p>
+<p>Here are some key differences between Zephyr OS and consumer-based operating systems:</p>
+<ul>
+<li>
+<p>Design and Purpose: Zephyr OS is designed for resource-constrained systems, particularly in the IoT domain, where energy efficiency is crucial.
+It is designed to be lightweight and efficient, focusing on energy efficiency. Consumer-based operating systems like Windows or Ubuntu are designed
+for a wide range of applications, from personal computing to server environments, and are not designed to be lightweight or energy-efficient.</p>
+</li>
+<li>
+<p>Security: Zephyr OS is designed with a focus on security. It provides long-term support, regular security updates, and a rigorously tested and
+auditable code base. Consumer-based operating systems like Windows or Ubuntu also prioritize security, but they are not designed with the same level of
+focus as Zephyr OS.</p>
+</li>
+<li>
+<p>Interoperability: Zephyr OS is designed to be interoperable across a wide range of hardware, software, and communication protocol options.
+Consumer-based operating systems like Windows or Ubuntu are designed to be compatible with a wide range of hardware and software, but they are not
+designed with the same level of interoperability as Zephyr OS.</p>
+</li>
+<li>
+<p>Ecosystem: Zephyr OS has a strong ecosystem, including a community that provides training and consulting, development tools, code libraries, and more.
+Consumer-based operating systems like Windows or Ubuntu also have strong ecosystems, but they are not designed with the same level of community support
+and development tools as Zephyr OS.</p>
+</li>
+</ul>
+<p>In conclusion, while Zephyr OS and consumer-based operating systems like Windows or Ubuntu serve different purposes and have different characteristics,
+they both play crucial roles in the world of computing. The choice between them depends on the specific requirements of the application or system
+being developed.</p>
+<h2 id="lesson-1">Lesson 1</h2>
+<p><img src="./assets/nRF_connect_sdk_2-01.png" alt="Image description"
+style="display: block; margin: auto; width: 65%; height: auto; border-radius: 8px;"></p>
+<p><code>Zephyr RTOS</code> is an open-source real-time operating system for connected and resource-constrained embedded devices. It includes a scheduler that ensures
+predictable/deterministic execution patterns and abstracts out the timing requirements. It also comes with a rich set of fundamental libraries and middleware
+that simplifies development and helps reduce a product’s time to market. Zephyr RTOS is highly configurable and enables scalable configurations from
+very small configurations for memory-constrained devices (minimum 8 kilobytes, for example, simple LED blinking application) to powerful, feature-rich,
+high-processing power devices (multiple MBs of memory) with large memory configurations.</p>
+<p>Internally, the nRF Connect SDK code is organized into four main repositories:</p>
+<ul>
+<li>nrf – Applications, samples, connectivity protocols (Nordic)</li>
+<li>nrfxlib – Common libraries and stacks (Nordic)</li>
+<li>Zephyr – RTOS &amp; Board configurations (open source)</li>
+<li>MCUBoot – Secure Bootloader (open source)</li>
+</ul>
+<p><img src="./assets/Lesson_1_build_process-04.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<p><code>west</code> is a core command-line utility that is internally invoked by the nRF Connect for VS Code to do many tasks including building, and flashing
+applications to your board.</p>
+<p>The <code>devicetree</code> describes the hardware and <code>Kconfig</code> generates definitions that configure the whole system.</p>
+<h2 id="lesson-2">Lesson 2</h2>
+<p>examine how hardware is described in nRF Connect SDK, whether it is a development kit (DK), a System on Chip (SoC), a System in a Package (SiP).</p>
+<p>Objectives</p>
+<ul>
+<li>Examine the devicetree API <zephyr/devicetree.h></li>
+<li>Examine board-level devicetree .dts</li>
+<li>Examine SoC-level devicetree .dtsi</li>
+<li>Understand the purpose of devicetree binding files (.yaml) and the compatible property</li>
+<li>Understand the device driver model <zephyr/device.h></li>
+<li>Analyze the decoupling between a device driver API and a device driver implementation and the need to have a device pointer</li>
+<li>Examine the generic GPIO interface APIs <zephyr/drivers/gpio.h></li>
+<li>Practice through hands-on exercises configuring GPIO pins and learn how to read/write to/from GPIO pins and how to set up interrupts for input GPIO pins</li>
+</ul>
+<h3 id="devicetree">Devicetree</h3>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/dts-v1/<span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>/<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span>a-node<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">                </span>subnode_label:<span class="w"> </span>a-sub-node<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">                        </span><span class="nv">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;<span class="m">3</span>&gt;<span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">                </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+<h4 id="devicetree-bindings-yaml-files">Devicetree bindings (YAML files)</h4>
+<p>It declares requirements on the contents of devicetree nodes, and provides semantic information about the contents of valid nodes.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">compatible</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nordic,nrf-sample&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">properties</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">num-sample</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">int</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<p>Sample DTS file (.dts) with the node <code>node0</code> that is set to the compatible <code>nordic,nrf-sample</code>. This means the <code>node0</code> node must have the required property
+<code>num-sample</code> and that property must be assigned an integer value. Otherwise, the build will fail.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>node0<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">     </span><span class="nv">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nordic,nrf-sample&quot;</span><span class="p">;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">     </span>num-sample<span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;<span class="m">3</span>&gt;<span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+<h4 id="aliases">Aliases</h4>
+<p>name of the property is the name of that alias and the value of the property is a reference to a node in the device tree.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">        </span>aliases<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">                </span><span class="nv">subnode_alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">&amp;</span>subnode_label<span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+<p>The purpose here is that your C/C++ application code (Ex: main.c) will use the alias. The definition of fixed aliases (Ex: led0 for the first LED on a
+board ) in boards’ dts files can make the application code more portable, as it can avoid hard-coding varying device node names and make the application
+code more flexible to changes in the board used.</p>
+<h4 id="accessing-the-devicetree">Accessing the devicetree</h4>
+<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/build/dts/api-usage.html#node-identifiers">Ways to get node-identifier</a></p>
+<p>To get information about a particular devicetree node in your source code, you need a node identifier for it. This is just a C macro that refers to
+the node.</p>
+<p>node identifier of a-sub-node:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DT_NODELABEL<span class="o">(</span>subnode-label<span class="o">)</span>
+</span></code></pre></div>
+<p>To get the value assigned to a certain devicetree property, we can use the macro DT_PROP().</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>DT_PROP<span class="o">(</span>DT_NODELABEL<span class="o">(</span>subnode-label<span class="o">)</span>,<span class="w"> </span>foo<span class="o">)</span>
+</span></code></pre></div>
+<p>Device tree file is available in path: <code>&lt;install_path&gt;\zephyr\boards\arm\nrf52833dk_nrf52833\nrf52833dk_nrf52833.dts.</code></p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>/home/deimos/ncs/v2.5.0-rc2/zephyr/boards/arm/nrf52dk_nrf52832
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>code<span class="w"> </span>./nrf52dk_nrf52832.dts
+</span></code></pre></div>
+<h3 id="device-driver-model">Device driver model</h3>
+<p>In order to interact with a hardware peripheral or a system block, we need to use a device driver (or driver for short), which is software that deals
+with the low-level details of configuring the hardware the way we want.</p>
+<p>The following code snippet will take the devicetree node identifier returned by DT_NODELABEL() and return a pointer to the device object.
+Then <code>device_is_ready()</code> verifies that the device is ready for use, i.e. in a state so that it can be used with its standard API.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">device</span><span class="w"> </span><span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEVICE_DT_GET</span><span class="p">(</span><span class="n">DT_NODELABEL</span><span class="p">(</span><span class="n">uart0</span><span class="p">));</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">device_is_ready</span><span class="p">(</span><span class="n">dev</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="gpio-generic-api">GPIO Generic API</h3>
+<p>To interact with the General-Purpose Input/Output (GPIO) peripheral, we can use the generic API <zephyr/drivers/gpio.h>, which provides user-friendly
+functions to interact with GPIO peripherals.</p>
+<p>When using any driver in Zephyr, the first step is to initialize it by retrieving the device pointer.</p>
+<h4 id="initializing-the-api">Initializing the API</h4>
+<p>Before using the device pointer contained in gpio_dt_spec led, we need to check if it’s ready using <code>device_is_ready()</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">device_is_ready</span><span class="p">(</span><span class="n">led</span><span class="p">.</span><span class="n">port</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="configure-a-single-pin">Configure a single pin</h4>
+<p>This is done by calling the function <code>gpio_pin_configure_dt()</code>, which has the following signature:</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">gpio_pin_configure_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_OUTPUT</span><span class="p">);</span>
+</span></code></pre></div>
+<p>The following line configures the pin led.pin as an output that is active low.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">gpio_pin_configure_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_OUTPUT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">GPIO_ACTIVE_LOW</span><span class="p">);</span>
+</span></code></pre></div>
+<h4 id="write-to-an-output-pin">Write to an output pin</h4>
+<p>Writing to an output pin is straightforward by using the function <code>gpio_pin_set_dt()</code>, which has the following signature</p>
+<p>For example, the following line sets the pin associated with gpio_dt_spec led, which can be denoted as led.pin, to logic 1 “active state”:</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">gpio_pin_set_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span></code></pre></div>
+<p>For example, the following line will toggle the pin led.pin, whenever this API is called.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">gpio_pin_toggle_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">);</span>
+</span></code></pre></div>
+<h4 id="read-from-an-input-pin">Read from an input pin</h4>
+<p>Reading a pin configured as an input is not as straightforward as writing to a pin configured as an output.
+There are two possible methods to read the status of an input pin:</p>
+<h5 id="polling">Polling</h5>
+<p>Polling means continuously reading the status of the pin to check if it has changed. To read the current status of a pin, all you need to do is to
+call the function <code>gpio_pin_get_dt()</code></p>
+<p>For example, the following line reads the current status of led.pin saves it in a variable called val.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_pin_get_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="interrupt-method">Interrupt method</h5>
+<p>(Interrupt handler is also known as an interrupt service routine)</p>
+<p>You can only configure an interrupt on a GPIO pin configured as an input.</p>
+<ol>
+<li>Configure the interrupt on a pin.</li>
+</ol>
+<p>The following line will configure an interrupt on dev.pin on the change to logical level 1.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">gpio_pin_interrupt_configure_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">button</span><span class="p">,</span><span class="n">GPIO_INT_EDGE_TO_ACTIVE</span><span class="p">);</span>
+</span></code></pre></div>
+<ol>
+<li>Define the callback function <code>pin_isr()</code>.</li>
+</ol>
+<p>The signature (prototype) of the callback function is shown below</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">pin_isr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">device</span><span class="w"> </span><span class="o">*</span><span class="n">dev</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_callback</span><span class="w"> </span><span class="o">*</span><span class="n">cb</span><span class="p">,</span><span class="w"> </span><span class="n">gpio_port_pins_t</span><span class="w"> </span><span class="n">pins</span><span class="p">);</span>
+</span></code></pre></div>
+<ol>
+<li>Define a variable of type static struct <code>gpio_callback</code> as shown in the code line below.</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_callback</span><span class="w"> </span><span class="n">pin_cb_data</span><span class="p">;</span>
+</span></code></pre></div>
+<ol>
+<li>Initialize the gpio callback variable <code>pin_cb_data</code> using <code>gpio_init_callback()</code>.</li>
+</ol>
+<p>For example, the following line will initialize the <code>pin_cb_data</code> variable with the callback function <code>pin_isr</code> and the bit mask of pin <code>dev.pin</code>.
+   Note the use of the macro <code>BIT(n)</code>, which simply gets an unsigned integer with bit position <code>n</code> set.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">gpio_init_callback</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pin_cb_data</span><span class="p">,</span><span class="w"> </span><span class="n">pin_isr</span><span class="p">,</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="n">dev</span><span class="p">.</span><span class="n">pin</span><span class="p">));</span>
+</span></code></pre></div>
+<ol>
+<li>The final step is to add the callback function through the function <code>gpio_add_callback()</code>.</li>
+</ol>
+<p>For example, the following line adds the callback function that we set up in the previous steps.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">gpio_add_callback</span><span class="p">(</span><span class="n">button</span><span class="p">.</span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pin_cb_data</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="program-example-blinky">Program example - blinky</h3>
+<ol>
+<li>Include modules</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/kernel.h&gt;</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/drivers/gpio.h&gt;</span>
+</span></code></pre></div>
+<ol>
+<li>Define the node identifier</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="cp">#define LED0_NODE DT_ALIAS(led0)</span>
+</span></code></pre></div>
+<ol>
+<li>Retrieve the device pointer, pin number, and configuration flags.</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_dt_spec</span><span class="w"> </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_DT_SPEC_GET</span><span class="p">(</span><span class="n">LED0_NODE</span><span class="p">,</span><span class="w">  </span><span class="n">gpios</span><span class="p">);</span>
+</span></code></pre></div>
+<ol>
+<li>Verify that the device is ready for use</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">device_is_ready</span><span class="p">(</span><span class="n">led</span><span class="p">.</span><span class="n">port</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>Configure the GPIO pin</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_pin_configure_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_OUTPUT_ACTIVE</span><span class="p">);</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>Continuously toggle the GPIO pin</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_pin_toggle_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">led</span><span class="p">);</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="n">k_msleep</span><span class="p">(</span><span class="n">SLEEP_TIME_MS</span><span class="p">);</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="lesson-3">Lesson 3</h2>
+<p>Create a minimal working application from scratch and add our own custom files and configurations to customize the application.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>app/
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="p">|</span>--<span class="w"> </span>CMakeLists.txt
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="p">|</span>--<span class="w"> </span>Kconfig
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">|</span>--<span class="w"> </span>prj.conf
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">|</span>--<span class="w"> </span>&lt;board_name&gt;.overlay
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="p">|</span>--<span class="w"> </span>src/
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">    </span><span class="p">|</span>--<span class="w"> </span>main.c
+</span></code></pre></div>
+<p>Objectives</p>
+<ul>
+<li>Understand the use of Kconfig configuration files to enable and configure the different software modules available in the nRF Connect SDK</li>
+<li>Examine an application configuration file and a board configuration file and understand the relation between them</li>
+<li>Learn how to explore the available configuration options of a certain software module using guiconfig</li>
+<li>Understand multi-image builds, and how a child-image is added to your application</li>
+<li>Practice through hands-on exercises how to create an application from scratch, and how to add modules using Kconfig and modify the devicetree</li>
+</ul>
+<h3 id="configuration-files">Configuration files</h3>
+<h4 id="application-board">Application &amp; board</h4>
+<p>Each configuration option must start with the prefix CONFIG_ followed by the name of the software module to configure, then the value to be set, with
+no spaces around the equals sign.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>CONFIG_&lt;symbol_name&gt;<span class="o">=</span>&lt;value&gt;
+</span></code></pre></div>
+<ul>
+<li>App cfg: prj.conf</li>
+<li>Brd cfg: <board_name>_defconfig in <nRF Connect SDK Installation Path>\zephyr\boards\arm\nrf52833dk_nrf52833.</li>
+</ul>
+<p>You should never modify any board configuration files. Instead, rely on the application configuration file to set newconfigurations
+and subsequently overwrite any default board configurations if needed.  If you change the board configuration file directly, then these changes will
+apply for all projects using that board.</p>
+<h4 id="kernel-configuration-kconfig">Kernel Configuration (Kconfig)</h4>
+<p>An alternative way to modify the contents of the prj.conf (application configuration file) is by using the Kconfig view.
+It groups all functionalities provided by the Zephyr kernel into menus and submenus which can be viewed in a graphical tree format.</p>
+<p>If instead of Kconfig, you find GUIconfig, you can still view Kconfig by viewing the submenu under Guiconfig.</p>
+<p><img src="./assets/kconfig.png" alt="Image description"
+style="display: block; margin: auto; width: 85%; height: auto; border-radius: 8px;"></p>
+<h3 id="devicetree-overlays-cmake-and-multi-image-builds">Devicetree overlays, CMake, and multi-image builds</h3>
+<p>(PATH to fully compiled devicetree of a build: application_path/build/zephyr/zephyr.dts)</p>
+<p>It is not recommended to modify the devicetree directly, so instead we use devicetree overlays to do this.
+The overlay only needs to include the node and property it wants to modify.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">&amp;</span>spi1<span class="o">{</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="p">&amp;</span>pinctrl<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w"> </span>spi1_default:<span class="w"> </span>spi1_default<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">  </span>group1<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">   </span><span class="nv">psels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;NRF_PSEL<span class="o">(</span>SPIM_MOSI,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">25</span><span class="o">)</span>&gt;<span class="p">;</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">  </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w"> </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w"> </span>spi1_sleep:<span class="w"> </span>spi1_sleep<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">  </span>group1<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">   </span><span class="nv">psels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;NRF_PSEL<span class="o">(</span>SPIM_MOSI,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">25</span><span class="o">)</span>&gt;<span class="p">;</span>
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">  </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w"> </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+<p>The overlay file shown above will set node spi1 to have the status okay, essentially enabling this node. Then it is changing the pin configuration for
+the SPIM_MOSI line to pin 25 by changing the appropriate sub-nodes and properties in the &amp;pinctrl node. Note that you must change the pin configuration
+for both the default and sleep states.</p>
+<h3 id="cmake">CMake</h3>
+<p>The file <code>CMakeLists.txt</code> is the main CMake project file and the source of this build process configuration.</p>
+<h3 id="multi-image-builds">Multi-Image Builds</h3>
+<p>he firmware running on a device can consist of one application or image, or it can consist of multiple images, making it a multi-image build.</p>
+<p>Multi-image builds are used in the following cases:</p>
+<ul>
+<li>Applications that have DFU enabled (serial, USB-CDC, BLE, etc.)</li>
+<li>Multi-core or multi-partition targets (nRF53 and nRF9160)</li>
+</ul>
+<h3 id="app-from-scratch">App from scratch</h3>
+<p>Necessary 3 files:</p>
+<ul>
+<li><code>/src/main.c</code></li>
+<li><code>prj.conf</code></li>
+<li><code>CMakeLists.txt</code></li>
+</ul>
+<p>CMakeLists</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>cmake_minimum_required<span class="o">(</span>VERSION<span class="w"> </span><span class="m">3</span>.20.0<span class="o">)</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>find_package<span class="o">(</span>Zephyr<span class="w"> </span>REQUIRED<span class="w"> </span>HINTS<span class="w"> </span><span class="nv">$ENV</span><span class="o">{</span>ZEPHYR_BASE<span class="o">})</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>project<span class="o">(</span>hello_world<span class="o">)</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>target_sources<span class="o">(</span>app<span class="w"> </span>PRIVATE<span class="w"> </span>src/main.c<span class="o">)</span>
+</span></code></pre></div>
+<p>main.c</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/kernel.h&gt;</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/sys/printk.h&gt;</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="p">{</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w"> </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">  </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Hello World!</span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">  </span><span class="n">k_msleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="adding-custom-configurations">Adding custom configurations</h3>
+<p>Create a file called <code>Kconfig</code> in the application directory (the same location as CMakeLists.txt and prj.conf). Make sure the file does not have a file extension.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;Kconfig.zephyr&quot;</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>config<span class="w"> </span>MYFUNCTION
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">  </span>bool<span class="w"> </span><span class="s2">&quot;Enable my function&quot;</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">  </span>default<span class="w"> </span>n
+</span></code></pre></div>
+<p>In CMakeLists.txt, we want the addition of the custom files to be conditional. Change the last line to use the function target_sources_ifdef(), like this:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>target_sources_ifdef<span class="o">(</span>CONFIG_MYFUNCTION<span class="w"> </span>app<span class="w"> </span>PRIVATE<span class="w"> </span>src/myfunction.c<span class="o">)</span>
+</span></code></pre></div>
+<p>Enable the config by adding the following line to prj.conf</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nv">CONFIG_MYFUNCTION</span><span class="o">=</span>y
+</span></code></pre></div>
+<p>Update main.c</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/kernel.h&gt;</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/sys/printk.h&gt;</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="cp">#ifdef CONFIG_MYFUNCTION</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;myfunction.h&quot;</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="cp">#endif</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="p">{</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w"> </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">  </span><span class="cp">#ifdef CONFIG_MYFUNCTION</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;The sum of %d and %d is %d</span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">));</span>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">  </span><span class="cp">#else</span>
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;MYFUNCTION not enabled</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">   </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="w">  </span><span class="cp">#endif</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="w">  </span><span class="n">k_msleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Build and flash the application</p>
+<p>If you will change in prj.conf to</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nv">CONFIG_MYFUNCTION</span><span class="o">=</span>n
+</span></code></pre></div>
+<p>you will get the output: <code>MYFUNCTION not enabled</code></p>
+<h3 id="modifying-the-devicetree-changing-the-baud-rate-at-which-information-is-sent-to-the-console">Modifying the devicetree - changing the baud rate at which information is sent to the console</h3>
+<p>Create an overlay file in the application directory (the same location as CMakeLists.txt and prj.conf) with the name of the board you’re using,
+in our case nrf52833dk_nrf52833.overlay</p>
+<p>In nRF Connect for VS Code, in the Details View, there is an option to create an overlay file with the same board name used for the build.</p>
+<p>Add the following to the overlay file, which can be found in the root directory of the application, to change this property:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">&amp;</span>uart0<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w"> </span>current-speed<span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;<span class="m">9600</span>&gt;<span class="p">;</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Do a <code>pristine build</code> and flash the sample to the board.</p>
+<p>Observe that the serial terminal doesn’t show any output. This is because we changed the baud rate in the application to 9600 baud/sec while the
+serial terminal is launched with the default baud rate of 115200 baud/sec</p>
+<h2 id="lesson-4">Lesson 4</h2>
+<p>We will learn more about logging using both the simple method of <code>printk()</code> and a sophisticated method using the advanced logging module.</p>
+<ul>
+<li>Learn how to print strings and formatted strings to a console using <code>printk()</code></li>
+<li>Recognize the limitations of <code>printk()</code></li>
+<li>Learn how to print strings and formatted strings to a console using the logger module</li>
+<li>Learn how to hex dump variables using the logger module</li>
+<li>Explore the logger module features</li>
+<li>Practice through hands-on exercises enabling/configuring software modules</li>
+</ul>
+<h3 id="printk"><code>printk()</code></h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/sys/printk.h&gt;</span>
+</span></code></pre></div>
+<p>The syntax <code>printk()</code> is similar to the standard printf() in C.
+However, <code>printk()</code> is a less advanced function that only supports a subset of the features that printf() does, making it optimized for embedded development.</p>
+<p>A basic set of specifiers are supported:</p>
+<ul>
+<li>Signed decimal: %d, %i and its subcategories</li>
+<li>Unsigned decimal: %u and its subcategories</li>
+<li>Unsigned hexadecimal: %x (%X is treated as %x)</li>
+<li>Pointer: %p</li>
+<li>String: %s</li>
+<li>Character: %c</li>
+<li>Percent: %%</li>
+<li>New line: \n</li>
+<li>Carriage return: \r</li>
+</ul>
+<p>Field width (with or without leading zeroes) is supported. Length attributes h, hh, l, ll and z are supported.
+However, integral values with lld and lli are only printed if they fit in a long, otherwise ERR is printed.
+Full 64-bit values may be printed with llx. Flags and precision attributes (float and double) are not supported by default,
+but can be enabled manually (lesson 6).</p>
+<p>Examples of use:</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Button 1 was pressed!</span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">44</span><span class="p">;</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="n">printk</span><span class="p">(</span><span class="s">&quot;The value of x is %d</span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">);</span>
+</span></code></pre></div>
+<p>To use <code>printk()</code> you need to:</p>
+<ol>
+<li>Include the console drivers (enabling the configuration option CONFIG_CONSOLE in the application configuration file).</li>
+<li>Select the console (UART console (CONFIG_UART_CONSOLE) and RTT console (CONFIG_RTT_CONSOLE)).</li>
+<li>Include the header file <code>&lt;zephyr/sys/printk.h&gt;</code> in your application source code.</li>
+</ol>
+<h3 id="logger-module">Logger module</h3>
+<p>prj.conf</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nv">CONFIG_LOG</span><span class="o">=</span>y
+</span></code></pre></div>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/logging/log.h&gt;</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="n">LOG_MODULE_REGISTER</span><span class="p">(</span><span class="n">Less4_Exer2</span><span class="p">,</span><span class="n">LOG_LEVEL_DBG</span><span class="p">);</span>
+</span></code></pre></div>
+<p>Recommended method for sending messages to a console, unlike the <code>printk()</code> function, which will not return until all bytes of the message are sent.</p>
+<ul>
+<li>Multiple backends</li>
+<li>Compile time filtering on module level</li>
+<li>Run time filtering independent for each backend</li>
+<li>Timestamping with user-provided function</li>
+<li>Dedicated API for dumping data</li>
+<li>Coloring of logs</li>
+<li><code>printk()</code> support – printk message can be redirected to the logger</li>
+</ul>
+<p>By using proper configuration options, logs can be gradually removed from compilation to reduce image size and execution time when logs are not needed.
+During compilation, logs can be filtered out based on module and severity level.</p>
+<p>When logging is enabled globally, it works for all modules. However, modules can disable logging locally.
+Every module can specify its own logging level (<code>LOG_LEVEL_[level]</code>) or use <code>LOG_LEVEL_NONE</code>, which will disable the logging for that module.</p>
+<p>The logger module is designed to be thread-safe and minimizes the time needed to log the message.</p>
+<h4 id="severity-levels">Severity levels</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (most severe)</td>
+<td>Error</td>
+<td>Severe error conditions</td>
+<td>LOG_LEVEL_ERR</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Warning</td>
+<td>Conditions that should be taken care of</td>
+<td>LOG_LEVEL_WRN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Info</td>
+<td>Informational messages that require no action</td>
+<td>LOG_LEVEL_INF</td>
+</tr>
+<tr>
+<td>4 (least severe)</td>
+<td>Debug Debugging messages</td>
+<td>LOG_LEVEL_DBG</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><code>LOG_X</code> for standard printf-like messages, where <code>X</code> can be <code>DBG</code>, <code>INF</code>, <code>WRN</code>, or <code>ERR</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">LOG_INF</span><span class="p">(</span><span class="s">&quot;Exercise %d&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="n">LOG_DBG</span><span class="p">(</span><span class="s">&quot;A log message in debug level&quot;</span><span class="p">);</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="n">LOG_WRN</span><span class="p">(</span><span class="s">&quot;A log message in warning level!&quot;</span><span class="p">);</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;A log message in Error level!&quot;</span><span class="p">);</span>
+</span></code></pre></div>
+<h4 id="dumping-data">Dumping data</h4>
+<p><code>LOG_HEXDUMP_X</code>  macros for dumping data where <code>X</code> can be <code>DBG</code>, <code>INF</code>, <code>WRN</code>, or <code>ERR</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">                  </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">                  </span><span class="sc">&#39;H&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;e&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;l&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;l&#39;</span><span class="p">,</span><span class="sc">&#39;o&#39;</span><span class="p">};</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="n">LOG_HEXDUMP_INF</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="s">&quot;Sample Data!&quot;</span><span class="p">);</span>
+</span></code></pre></div>
+<h4 id="kconfig-logging-options">Kconfig logging options</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOG_MODE_DEFERRED</td>
+<td>Deferred mode is used by default. Log messages are buffered and processed later. This mode has the least impact on the application. Time-consuming processing is deferred to the known context.</td>
+</tr>
+<tr>
+<td>LOG_PROCESS_THREAD</td>
+<td>A thread is created by the logger subsystem (deferred mode). This thread is woken up periodically (LOG_PROCESS_THREAD_SLEEP_MS) or whenever the number of buffered messages exceeds the threshold (LOG_PROCESS_TRIGGER_THR).</td>
+</tr>
+<tr>
+<td>LOG_BACKEND_UART</td>
+<td>Send logs to the UART console.</td>
+</tr>
+<tr>
+<td>LOG_BACKEND_SHOW_COLOR</td>
+<td>Prints errors in red and warnings in yellow. Not all terminal emulators support this feature.</td>
+</tr>
+<tr>
+<td>LOG_BACKEND_FORMAT_TIMESTAMP</td>
+<td>Timestamp is formatted to <code>hh:mm:ss.ms,us</code>.</td>
+</tr>
+<tr>
+<td>LOG_MODE_OVERFLOW</td>
+<td>If there is no space to log a new message, the oldest one is dropped.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lesson-5">Lesson 5</h2>
+<p>Learn how to use the UART driver in an interrupt-driven fashion so that when new data arrives the application is interrupted and a callback
+function (ISR) is called.</p>
+<p>Objectives</p>
+<ul>
+<li>Learn how to send/receive data over UART in asynchronous mode (interrupt-driven)</li>
+<li>Learn how to configure the UART peripheral hardware through the UART API</li>
+<li>Examine and practice the use of the UART driver API</li>
+</ul>
+<p>Data transfer is done serially. It starts with a starting bit, usually by driving logic low for one clock cycle.
+In the next n clock cycles, n bits are sent sequentially from the transmitter (n is usually 8). Optionally,
+1 parity bit can be added to improve transfer reliability. In the end, the data wire is usually pulled up high to indicate the end of transfer.</p>
+<p>Parity bit: A parity bit describes the evenness or oddness of the data and is a way for the receiver to tell if the data has changed during transmission.</p>
+<h3 id="uart-driver">UART Driver</h3>
+<p>In Zephyr, there are three different ways to access the UART peripheral, all with different API functions; polling, interrupts-driven and asynchronous.</p>
+<p>Polling - <code>uart_poll_in()</code> reading function and <code>uart_poll_out()</code> writing function.
+Asynchronous API - the most efficient way to use UART, it allows to read and write data in the background using EasyDMA.</p>
+<h4 id="enable-driver">Enable driver</h4>
+<ol>
+<li>
+<p>Enable for use by adding <code>prj.conf</code></p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nv">CONFIG_SERIAL</span><span class="o">=</span>y
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="nv">CONFIG_UART_ASYNC_API</span><span class="o">=</span>y
+</span></code></pre></div>
+</li>
+<li>
+<p>Include the header file</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/drivers/uart.h&gt;</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create an instance of uart device structure</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">device</span><span class="w"> </span><span class="o">*</span><span class="n">uart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEVICE_DT_GET</span><span class="p">(</span><span class="n">DT_NODELABEL</span><span class="p">(</span><span class="n">uart0</span><span class="p">));</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">device_is_ready</span><span class="p">(</span><span class="n">uart</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">   </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The pointer <code>uart</code> of type <code>struct device</code> is the structure that is used when interacting with the UART API.
+  On the other hand, <code>uart0</code> is the node label of the devicetree node that represents the UART hardware controller on the chip.</p>
+</li>
+</ol>
+<h4 id="uart-configurations">UART Configurations</h4>
+<ol>
+<li>
+<p>Configuration of UART communication</p>
+<p>The default static configuration of the UART hardware is obtained from the devicetree.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_config</span><span class="w"> </span><span class="n">uart_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="p">.</span><span class="n">baudrate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">115200</span><span class="p">,</span>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="p">.</span><span class="n">parity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_CFG_PARITY_NONE</span><span class="p">,</span>
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="p">.</span><span class="n">stop_bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_CFG_STOP_BITS_1</span><span class="p">,</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="p">.</span><span class="n">data_bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_CFG_DATA_BITS_8</span><span class="p">,</span>
+</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="p">.</span><span class="n">flow_ctrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_CFG_FLOW_CTRL_NONE</span>
+</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="p">};</span>
+</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>
+</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_configure</span><span class="p">(</span><span class="n">uart</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">uart_cfg</span><span class="p">);</span>
+</span><span id="__span-45-10"><a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>
+</span><span id="__span-45-11"><a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">-</span><span class="n">ENOSYS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-45-12"><a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">ENOSYS</span><span class="p">;</span>
+</span><span id="__span-45-13"><a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Define callback function</p>
+<p>The callback function should have the following signature:</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">uart_cb</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">device</span><span class="w"> </span><span class="o">*</span><span class="n">dev</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_event</span><span class="w"> </span><span class="o">*</span><span class="n">evt</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">user_data</span><span class="p">)</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="p">{</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">   </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">evt</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">)</span>
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">   </span><span class="p">{</span>
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_TX_DONE</span><span class="p">:</span>
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_TX_ABORTED</span><span class="p">:</span>
+</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-10"><a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-11"><a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_RDY</span><span class="p">:</span>
+</span><span id="__span-46-12"><a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-13"><a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-14"><a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_BUF_REQUEST</span><span class="p">:</span>
+</span><span id="__span-46-15"><a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-16"><a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-17"><a id="__codelineno-46-17" name="__codelineno-46-17" href="#__codelineno-46-17"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_BUF_RELEASED</span><span class="p">:</span>
+</span><span id="__span-46-18"><a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-19"><a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-20"><a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_DISABLED</span><span class="p">:</span>
+</span><span id="__span-46-21"><a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-22"><a id="__codelineno-46-22" name="__codelineno-46-22" href="#__codelineno-46-22"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-23"><a id="__codelineno-46-23" name="__codelineno-46-23" href="#__codelineno-46-23"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_STOPPED</span><span class="p">:</span>
+</span><span id="__span-46-24"><a id="__codelineno-46-24" name="__codelineno-46-24" href="#__codelineno-46-24"></a><span class="w">      </span><span class="c1">// do something</span>
+</span><span id="__span-46-25"><a id="__codelineno-46-25" name="__codelineno-46-25" href="#__codelineno-46-25"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-26"><a id="__codelineno-46-26" name="__codelineno-46-26" href="#__codelineno-46-26"></a><span class="w">      </span><span class="k">default</span><span class="o">:</span>
+</span><span id="__span-46-27"><a id="__codelineno-46-27" name="__codelineno-46-27" href="#__codelineno-46-27"></a><span class="w">      </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-46-28"><a id="__codelineno-46-28" name="__codelineno-46-28" href="#__codelineno-46-28"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-46-29"><a id="__codelineno-46-29" name="__codelineno-46-29" href="#__codelineno-46-29"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Register the callback function by calling the function <code>uart_callback_set()</code>, which takes three parameters.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_callback_set</span><span class="p">(</span><span class="n">uart</span><span class="p">,</span><span class="w"> </span><span class="n">uart_cb</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h4 id="receive-data">Receive data</h4>
+<ol>
+<li>
+<p>Declare a receive buffer to store the incoming data.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"> </span><span class="c1">//A buffer to store incoming UART data</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>To start receiving, call the uart_rx_enable() function, and pass the address of the receive buffer.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">uart_rx_enable</span><span class="p">(</span><span class="n">uart</span><span class="p">,</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">rx_buf</span><span class="p">),</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>The data received is accessible through the UART callback on the UART_RX_RDY event.
+<code>evt-&gt;data.rx.len</code>, <code>evt-&gt;data.rx.offset</code>, <code>evt-&gt;rx.buf[rx.offset]</code>, <code>evt-&gt;rx.buf[rx.offset+rx.len]</code></p>
+</li>
+<li>
+<p>Continuous reception is not enabled by default. Once the receive buffer is full, you must manually enable reception.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="k">case</span><span class="w"> </span><span class="no">UART_RX_DISABLED</span><span class="p">:</span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">   </span><span class="n">uart_rx_enable</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">rx_buf</span><span class="p">),</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">   </span><span class="k">break</span><span class="p">;</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h4 id="transmit-data">Transmit data</h4>
+<ol>
+<li>Define a transmission buffer to hold the data to be sent.</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">tx_buf</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="p">{</span><span class="s">&quot;nRF Connect SDK Fundamentals Course </span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">};</span>
+</span></code></pre></div>
+<ol>
+<li>Call the function <code>uart_tx()</code> to send the data over UART.</li>
+</ol>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_tx</span><span class="p">(</span><span class="n">uart</span><span class="p">,</span><span class="w"> </span><span class="n">tx_buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tx_buf</span><span class="p">),</span><span class="w"> </span><span class="n">SYS_FOREVER_US</span><span class="p">);</span>
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+</span><span id="__span-52-4"><a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The function returns immediately and the sending is actually managed internally by the UART driver.</p>
+<p>If your application needs to take action once the whole transmission buffer is transmitted, you could do that by using the <code>UART_TX_DONE</code> event
+in the UART callback function.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="k">case</span><span class="w"> </span><span class="no">UART_TX_DONE</span><span class="p">:</span>
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">  </span><span class="c1">// Do something here if needed  </span>
+</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">  </span><span class="k">break</span><span class="p">;</span>
+</span></code></pre></div>
+<p>UART driver in nRF Connect SDK doesn't support interrupts.</br>
+CTS stands for clear to send and is used when hardware flow control is enabled to receive the other module’s RTS (ready to send) signal to indicate
+that it can begin sending data.</br></p>
+<h2 id="lesson-6">Lesson 6</h2>
+<p>The basics of I2C and learn how to use the I2C driver in nRF.</p>
+<p>Objectives</p>
+<ul>
+<li>Learn how to use the I2C driver in nRF Connect SDK</li>
+<li>Practice using the I2C driver APIs through a hands-on exercise</li>
+<li>Communicate with an external sensor using the I2C bus</li>
+</ul>
+<h3 id="i2c-protocol">I2C Protocol</h3>
+<p>Since it uses 2-wire, the I2C protocol is also known as the Two-Wire Interface (TWI).</p>
+<p>I2C controllers on Nordic’s chips support multiple speeds: 100 (I2C_BITRATE_STANDARD), 400 (I2C_BITRATE_FAST) and 1000 (I2C_BITRATE_FAST_PLUS) kbps.
+The default speed is 100 kbps.
+I2C wires are called serial clock (SCL) and serial data (SDA)</p>
+<p>The SCL is generated by the I2C master to sync all devices on the bus to one clock, while the SDA line is bidirectional, so data can travel in
+either direction (from master to slave or slave to master).</p>
+<p>Each I2C slave device has a unique address that distinguishes it from the other I2C slave devices on the same bus. The address is usually a 7-bit
+value, however, some I2C slave devices also use a 10-bit value.</p>
+<h3 id="i2c-driver">I2C Driver</h3>
+<ol>
+<li>
+<p>Enable driver in <code>prj.conf</code></p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="nv">CONFIG_I2C</span><span class="o">=</span>y
+</span></code></pre></div>
+</li>
+<li>
+<p>Include header of the I2C API in your source code file.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;zephyr/drivers/i2c.h&gt;</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Specify which I2C controller your device (sensor) is connected to and its I2C address.</p>
+<p>If the sensor is not already defined in the board’s devicetree, you need to manually add your sensor as a child devicetree node to the i2c
+  controller, using a devicetree overlay file.</br></br></p>
+<p>3.1 Create overlay files.</br></p>
+<p>From the details panel, expand Input files and create an overlay file.
+  This will create an empty overlay file in your application root directory.</br></br></p>
+<p>3.2 In the overlay file, specify the I2C controller that your sensor is connected to and its address.</br></p>
+<p>At a minimum, you need to specify the compatible, the address of the i2c target device, and its label.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="p">&amp;</span>i2c0<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">   </span>mysensor:<span class="w"> </span>mysensor@4a<span class="o">{</span>
+</span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">      </span><span class="nv">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;i2c-device&quot;</span><span class="p">;</span>
+</span><span id="__span-56-4"><a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="w">      </span><span class="nv">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>&lt;<span class="w"> </span>0x4a<span class="w"> </span>&gt;<span class="p">;</span>
+</span><span id="__span-56-5"><a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="w">      </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MYSENSOR&quot;</span><span class="p">;</span>
+</span><span id="__span-56-6"><a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a><span class="w">   </span><span class="o">}</span><span class="p">;</span>
+</span><span id="__span-56-7"><a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="o">}</span><span class="p">;</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Define the node identifier.</p>
+<p>Use devicetree macro <code>DT_NODELABEL()</code> to get the node identifier symbol <code>I2C0_NODE</code>, which will represent the I2C hardware controller <code>i2c0</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="cp">#define I2C0_NODE DT_NODELABEL(mysensor)</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Retrieve the API-specific device structure.</p>
+<p>Macro call <code>I2C_DT_SPEC_GET()</code> returns the structure <code>i2c_dt_spec</code>, which contains the device pointer for the I2C bus, as well as the target address.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">i2c_dt_spec</span><span class="w"> </span><span class="n">dev_i2c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2C_DT_SPEC_GET</span><span class="p">(</span><span class="n">I2C0_NODE</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Use <code>device_is_ready()</code> to verify that the device is ready to use.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">device_is_ready</span><span class="p">(</span><span class="n">dev_i2c</span><span class="p">.</span><span class="n">bus</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;I2C bus %s is not ready!</span><span class="se">\n\r</span><span class="s">&quot;</span><span class="p">,</span><span class="n">dev_i2c</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+</span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">   </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h3 id="i2c-write">I2C Write</h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">config</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x8C</span><span class="p">};</span>
+</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i2c_write_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_i2c</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">config</span><span class="p">));</span>
+</span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
+</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="w"> </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Failed to write to I2C device address %x at reg. %x n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dev_i2c</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span><span class="n">config</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="i2c-read">I2C Read</h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i2c_read_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_i2c</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span>
+</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
+</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w"> </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Failed to read from I2C device address %x at Reg. %x n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dev_i2c</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span><span class="n">config</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span id="__span-61-5"><a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="i2c-writeread">I2C Write/Read</h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sensor_regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="p">{</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x00</span><span class="p">};</span>
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">temp_reading</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i2c_write_read_dt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_i2c</span><span class="p">,</span><span class="o">&amp;</span><span class="n">sensor_regs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">,</span><span class="o">&amp;</span><span class="n">temp_reading</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
+</span><span id="__span-62-5"><a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a><span class="w"> </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Failed to write/read I2C device address %x at Reg. %x n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dev_i2c</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span><span class="n">sensor_regs</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span id="__span-62-6"><a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Writing and subsequently reading is a common operation in the I2C protocol because you need to write the register you want to read from before reading.</p>
+<h2 id="lesson-7-multithreaded-applications">Lesson 7 - Multithreaded applications</h2>
+<p>How to create threads with different priorities and learn about the scheduler’s behavior through features like time slicing and workqueues in Zephyr RTOS.</p>
+<p>Objectives:</p>
+<ul>
+<li>Understand the main difference between bare-metal vs RTOS programming, including both advantages and disadvantages in utilizing an RTOS</li>
+<li>Get familiarized with Zephyr RTOS execution model, ISRs, threads, thread’s life-cycle and inter-task communication/synchronization mechanisms, and
+the scheduler</li>
+<li>Learn the basics of kernel services related to threads (user-defined threads, system threads, workqueue threads)</li>
+<li>Learn about preemptive scheduling and time-slicing through hands-on exercises</li>
+<li>Practice through hands-on exercises how to create threads, thread yielding and sleeping</li>
+<li>Practice through hands-on exercises how to offload work to a workqueue</li>
+</ul>
+<h3 id="bare-metal-vs-rtos-based-application">Bare-metal vs RTOS-based application</h3>
+<p>RTOS applications allow for multiple concurrent logics while bare-metal applications runs sequential logic.</p>
+<h4 id="bare-metal">Bare-metal</h4>
+<p>A bare-metal application, at its core, is just a big loop in the main function right after you have initialized the hardware/software at the device
+powerup/reset routines. All the execution is sequential logic, in other words, all instructions are executed in sequence unless interrupted by an
+interrupt service routine (ISR). So the only non-sequential logic you have in bare-metal programming makes use of exceptions.</br></p>
+<p>In general, a bare-metal program is typically more power-efficient, uses less memory, and in some situations runs faster. For applications with simple
+to average complexity, it is a good enough solution to have one sequential logic in a loop. Especially considering bare-metal programs are more
+power-efficient and use less memory. However, your application can very easily get quite complex in terms of maintaining the architecture as sequential
+logic. This is where using a real-time operating system (RTOS) becomes advantageous.</p>
+<h4 id="rtos">RTOS</h4>
+<p>Designing your application on top of an operating system allows you to have multiple concurrent logics in your application running in different
+execution units called threads, making your architecture simple, as opposed to just one sequential logic running in your main function in standalone mode.</br></p>
+<p>The core of an RTOS is called the kernel and controls everything in the system. The other big added advantage is the huge resources of libraries,
+drivers, and protocol stacks that are natively available by an RTOS like Zephyr.</br></p>
+<p>Interrupt Service Routines (ISRs) are available in both RTOS-based applications and bare-metal applications. They are generated asynchronously by the
+different devices drivers configured(including callback functions) and protocols stacks.</br></p>
+<p>Having the main() function is optional in Zephyr RTOS-based applications. This is because the main thread automatically spawned by the RTOS will do
+the necessary RTOS initialization, including scheduler/kernel setup, and core drivers setup.</p>
+<h3 id="zephyr-rtos-basics">Zephyr RTOS basics</h3>
+<h4 id="threads">Threads</h4>
+<p>A thread is the smallest logical unit of execution for the RTOS scheduler (covered later in this topic) that is competing for the CPU time.</p>
+<ul>
+<li>
+<p>Running: The running thread is the one that is currently being executed by the CPU.</p>
+</li>
+<li>
+<p>Runnable: A thread is marked as “Runnable” when it has no other dependencies with other threads or other system resources to proceed further in execution.
+The only resource this thread is waiting for is the CPU time, also known as “Ready” state.</p>
+</li>
+<li>
+<p>Non-runnable: A thread that has one or more factors that prevent its execution is deemed to be unready, and cannot be selected as the current thread.
+This can, for example, be because they are waiting for some resource that is not yet available or they have been terminated or suspended,
+also known as “Unready” state.</p>
+</li>
+</ul>
+<h4 id="system-threads">System threads</h4>
+<p>Thread that is spawned automatically by Zephyr RTOS during initialization.</p>
+<ul>
+<li>
+<p>Main thread - executes the necessary RTOS initializations and calls the application’s main() function, if it exists.</p>
+</li>
+<li>
+<p>Idle thread - runs when there is no other work to do.</p>
+</li>
+</ul>
+<h4 id="user-created-threads">User-created threads</h4>
+<p>User can define their own threads to assign tasks to.
+For example, a user can create a thread to delegate reading sensor data, another thread to process data, and so on.</p>
+<h4 id="workqueue-threads">Workqueue threads</h4>
+<p><code>Common execution unit</code> in <code>nRF Connect SDK</code> is a <code>work item</code>, which is nothing more than a user-defined function that gets called by a dedicated thread
+called a <code>workqueue thread</code>.</p>
+<p>The main use of this is to offload non-urgent work from an ISR or a high-priority thread to a lower priority thread.
+You do not need to create and initialize a workqueue if submitting work items to the system workqueue.
+ISR or high priority thread submits work into a workqueue, and the dedicated workqueue thread pulls out a work item in a first in, first out (FIFO) order.</p>
+<h4 id="threads-priority">Threads Priority</h4>
+<p>Threads are assigned an integer value to indicate their priority, which can be either negative or non-negative.</p>
+<p>A thread with a <code>negative priority</code> is classified as a <code>cooperative thread</code> (<code>CONFIG_NUM_COOP_PRIORITIES</code> and is, by default, equal to 16).
+Thread with a <code>non-negative priority</code> is classified as a <code>preemptible thread</code> (<code>CONFIG_NUM_PREEMPT_PRIORITIES</code> and is, by default, equal to 15).</p>
+<h4 id="scheduler">Scheduler</h4>
+<p>The scheduler is the part of the RTOS responsible for scheduling which tasks are running, i.e using CPU time, at any given time.
+It does this using a scheduling algorithm to determine which task should be the next to run.</p>
+<h5 id="rescheduling-point">Rescheduling point</h5>
+<p>Zephyr RTOS is by default a tickless RTOS. A tickless RTOS is completely event-driven, which means that instead of having periodic timer interrupts
+to wake up the scheduler, it is woken based on events known as rescheduling points.</br></p>
+<p>Rescheduling points are:</p>
+<ul>
+<li>When a thread calls <code>k_yield()</code>, the thread’s state is changed from “Running” to “Ready”.</li>
+<li>Unblocking a thread by giving/sending a kernel synchronization object like a semaphore, mutex or alert, causes the thread’s state to be changed from
+“Unready” to “Ready”.</li>
+<li>When a receiving thread gets new data from other threads using data passing kernel objects, the data receiving thread’s state is changed from
+“Waiting” to “Ready”.</li>
+<li>When time slicing is enabled and the thread has run continuously for the maximum time slice time allowed, the thread’s state
+is changed from “Running” to “Ready”.</li>
+</ul>
+<h4 id="isr">ISR</h4>
+<p>Interrupt Service Routines (ISRs) are generated asynchronously by the device drivers and protocol stacks.
+They are not scheduled (This includes callback functions).
+ISRs preempt the execution of the current thread, allowing the response to occur with very low overhead.</p>
+<h3 id="create-application-with-threads">Create application with threads</h3>
+<ol>
+<li>
+<p>Define the stack size and scheduling priority of the two threads that we will use when defining them.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="cp">#define STACKSIZE 1024 </span><span class="c1">// Stack sizes should always be a power of two (512, 1024, 2048, etc.).</span>
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="cp">#define THREAD0_PRIORITY 7</span>
+</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="cp">#define THREAD1_PRIORITY 7</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Define the threads</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="p">{</span>
+</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Hello, I am thread1</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>
+</span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="w">   </span><span class="n">k_yield</span><span class="p">();</span><span class="w"> </span><span class="c1">// Set to lower priority and allow to run other threads</span>
+</span><span id="__span-64-7"><a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="w">   </span><span class="c1">// OR set thread to sleep</span>
+</span><span id="__span-64-8"><a id="__codelineno-64-8" name="__codelineno-64-8" href="#__codelineno-64-8"></a><span class="w">   </span><span class="c1">//k_msleep(5);</span>
+</span><span id="__span-64-9"><a id="__codelineno-64-9" name="__codelineno-64-9" href="#__codelineno-64-9"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-64-10"><a id="__codelineno-64-10" name="__codelineno-64-10" href="#__codelineno-64-10"></a><span class="p">}</span>
+</span><span id="__span-64-11"><a id="__codelineno-64-11" name="__codelineno-64-11" href="#__codelineno-64-11"></a><span class="c1">// ...</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Initialize threads</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="n">K_THREAD_DEFINE</span><span class="p">(</span><span class="n">thread0_id</span><span class="p">,</span><span class="w"> </span><span class="n">STACKSIZE</span><span class="p">,</span><span class="w"> </span><span class="n">thread0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="w">      </span><span class="n">THREAD0_PRIORITY</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-65-3"><a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="n">K_THREAD_DEFINE</span><span class="p">(</span><span class="n">thread1_id</span><span class="p">,</span><span class="w"> </span><span class="n">STACKSIZE</span><span class="p">,</span><span class="w"> </span><span class="n">thread1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+</span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="w">      </span><span class="n">THREAD1_PRIORITY</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>If threads cannot sleep or yield, enable timeslicing in prj.conf to prevent starvation</p>
+<p>The scheduler will preempt the running thread after the configured amount of time (10 ms in this case) regardless of what it is doing</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="nv">CONFIG_TIMESLICING</span><span class="o">=</span>y
+</span><span id="__span-66-2"><a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="nv">CONFIG_TIMESLICE_SIZE</span><span class="o">=</span><span class="m">10</span>
+</span><span id="__span-66-3"><a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="nv">CONFIG_TIMESLICE_PRIORITY</span><span class="o">=</span><span class="m">0</span>
+</span></code></pre></div>
+<p>The scheduler will check and preempt only equal priority thread, thus if we will use code below, thread0 will starve thread1 forever</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="cp">#define THREAD0_PRIORITY 6</span>
+</span><span id="__span-67-2"><a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a><span class="cp">#define THREAD1_PRIORITY 7</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h3 id="workqueue-creation">Workqueue creation</h3>
+<ol>
+<li>
+<p>Define threads with different priorities</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="cp">#define THREAD0_PRIORITY 2 </span>
+</span><span id="__span-68-2"><a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a><span class="cp">#define THREAD1_PRIORITY 3</span>
+</span><span id="__span-68-3"><a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a><span class="cp">#define WORKQ_PRIORITY   4</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create threads with delta times</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">emulate_work</span><span class="p">()</span>
+</span><span id="__span-69-2"><a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a><span class="p">{</span>
+</span><span id="__span-69-3"><a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a><span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">count_out</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">150000</span><span class="p">;</span><span class="w"> </span><span class="n">count_out</span><span class="w"> </span><span class="o">++</span><span class="p">);</span>
+</span><span id="__span-69-4"><a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a><span class="p">}</span>
+</span><span id="__span-69-5"><a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a>
+</span><span id="__span-69-6"><a id="__codelineno-69-6" name="__codelineno-69-6" href="#__codelineno-69-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">thread0</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-69-7"><a id="__codelineno-69-7" name="__codelineno-69-7" href="#__codelineno-69-7"></a><span class="p">{</span>
+</span><span id="__span-69-8"><a id="__codelineno-69-8" name="__codelineno-69-8" href="#__codelineno-69-8"></a><span class="w">   </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">;</span>
+</span><span id="__span-69-9"><a id="__codelineno-69-9" name="__codelineno-69-9" href="#__codelineno-69-9"></a><span class="w">   </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">delta_time</span><span class="p">;</span>
+</span><span id="__span-69-10"><a id="__codelineno-69-10" name="__codelineno-69-10" href="#__codelineno-69-10"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-69-11"><a id="__codelineno-69-11" name="__codelineno-69-11" href="#__codelineno-69-11"></a><span class="w">      </span><span class="n">time_stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_uptime_get</span><span class="p">();</span>
+</span><span id="__span-69-12"><a id="__codelineno-69-12" name="__codelineno-69-12" href="#__codelineno-69-12"></a><span class="w">      </span><span class="n">emulate_work</span><span class="p">();</span>
+</span><span id="__span-69-13"><a id="__codelineno-69-13" name="__codelineno-69-13" href="#__codelineno-69-13"></a><span class="w">      </span><span class="n">delta_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_uptime_delta</span><span class="p">(</span><span class="o">&amp;</span><span class="n">time_stamp</span><span class="p">);</span>
+</span><span id="__span-69-14"><a id="__codelineno-69-14" name="__codelineno-69-14" href="#__codelineno-69-14"></a><span class="w">      </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;thread0 yielding this round in %lld ms</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">delta_time</span><span class="p">);</span>
+</span><span id="__span-69-15"><a id="__codelineno-69-15" name="__codelineno-69-15" href="#__codelineno-69-15"></a><span class="w">      </span><span class="n">k_msleep</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+</span><span id="__span-69-16"><a id="__codelineno-69-16" name="__codelineno-69-16" href="#__codelineno-69-16"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-69-17"><a id="__codelineno-69-17" name="__codelineno-69-17" href="#__codelineno-69-17"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Offload work from high priority task if necessary</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">work_info</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-70-2"><a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a><span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">k_work</span><span class="w"> </span><span class="n">work</span><span class="p">;</span>
+</span><span id="__span-70-3"><a id="__codelineno-70-3" name="__codelineno-70-3" href="#__codelineno-70-3"></a><span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">25</span><span class="p">];</span>
+</span><span id="__span-70-4"><a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a><span class="p">}</span><span class="w"> </span><span class="n">my_work</span><span class="p">;</span>
+</span><span id="__span-70-5"><a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>
+</span><span id="__span-70-6"><a id="__codelineno-70-6" name="__codelineno-70-6" href="#__codelineno-70-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">offload_function</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">k_work</span><span class="w"> </span><span class="o">*</span><span class="n">work_tem</span><span class="p">)</span>
+</span><span id="__span-70-7"><a id="__codelineno-70-7" name="__codelineno-70-7" href="#__codelineno-70-7"></a><span class="p">{</span>
+</span><span id="__span-70-8"><a id="__codelineno-70-8" name="__codelineno-70-8" href="#__codelineno-70-8"></a><span class="w">   </span><span class="n">emulate_work</span><span class="p">();</span>
+</span><span id="__span-70-9"><a id="__codelineno-70-9" name="__codelineno-70-9" href="#__codelineno-70-9"></a><span class="p">}</span>
+</span><span id="__span-70-10"><a id="__codelineno-70-10" name="__codelineno-70-10" href="#__codelineno-70-10"></a>
+</span><span id="__span-70-11"><a id="__codelineno-70-11" name="__codelineno-70-11" href="#__codelineno-70-11"></a><span class="n">k_work_queue_start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">offload_work_q</span><span class="p">,</span><span class="w"> </span><span class="n">my_stack_area</span><span class="p">,</span>
+</span><span id="__span-70-12"><a id="__codelineno-70-12" name="__codelineno-70-12" href="#__codelineno-70-12"></a><span class="w">                  </span><span class="n">K_THREAD_STACK_SIZEOF</span><span class="p">(</span><span class="n">my_stack_area</span><span class="p">),</span><span class="w"> </span><span class="n">WORKQ_PRIORITY</span><span class="p">,</span>
+</span><span id="__span-70-13"><a id="__codelineno-70-13" name="__codelineno-70-13" href="#__codelineno-70-13"></a><span class="w">                  </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-70-14"><a id="__codelineno-70-14" name="__codelineno-70-14" href="#__codelineno-70-14"></a><span class="n">strcpy</span><span class="p">(</span><span class="n">my_work</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Thread0 emulate_work()&quot;</span><span class="p">);</span>
+</span><span id="__span-70-15"><a id="__codelineno-70-15" name="__codelineno-70-15" href="#__codelineno-70-15"></a><span class="n">k_work_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_work</span><span class="p">.</span><span class="n">work</span><span class="p">,</span><span class="w"> </span><span class="n">offload_function</span><span class="p">);</span>
+</span><span id="__span-70-16"><a id="__codelineno-70-16" name="__codelineno-70-16" href="#__codelineno-70-16"></a>
+</span><span id="__span-70-17"><a id="__codelineno-70-17" name="__codelineno-70-17" href="#__codelineno-70-17"></a><span class="n">k_work_submit_to_queue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">offload_work_q</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_work</span><span class="p">.</span><span class="n">work</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h2 id="lesson-8-thread-synchronization">Lesson 8 - Thread synchronization</h2>
+<p>Need for thread synchronization and how to use semaphores and mutexes as thread synchronization mechanisms.</p>
+<p>Objective:</p>
+<ul>
+<li>Understand the need for thread synchronization mechanisms</li>
+<li>Learn the basic properties of semaphores and mutexes</li>
+<li>Practice through hands-on exercises how to use semaphores and mutexes for thread synchronization</li>
+</ul>
+<p>If more than one thread tries to access the same piece of code simultaneously, usually referred to as the critical section, this can lead to unexpected
+or erroneous behavior. Two mechanisms you can utilize to achieve thread synchronization are semaphores or mutexes.</p>
+<ul>
+<li>Semaphores have a maximum value that is set at initialization</li>
+<li>Mutexes have ownership property, i.e only the thread incrementing its value can decrement it, until zero when it is relinquished.</li>
+</ul>
+<h3 id="semaphores">Semaphores</h3>
+<p>In its simplest form, a semaphore is merely a plain variable that is changed, indicating the status of the common resource. Semaphores can be seen as
+a resource-sharing mechanism, where you have a finite instance of a resource that you want to manage access for multiple threads.
+They are more of a signaling mechanism used to control access to a given number of instances of a resource.</p>
+<p>Semaphores have the following properties:</p>
+<ul>
+<li>At initialization, you set an initial count (greater than 0) and a maximum limit.</li>
+<li>“Give” will increment the semaphore count unless the count is already at the maximum limit, in which case the signal will not increment.
+“Give” can be done from any thread or ISR.</li>
+<li>“Take” will decrement the semaphore count unless the semaphore is unavailable (count at zero). Any thread that is trying to take a semaphore that is
+unavailable needs to wait until some other thread makes it available (by giving the semaphore). “Take” can be done only in threads and not in ISR
+(since ISRs should not block on anything).</li>
+<li>There is no ownership of semaphores. This means a semaphore can be taken by one thread and can be given by any thread. It is not necessary that the
+thread that has taken the semaphore is the one to give it.</li>
+<li>The thread taking the semaphore is NOT eligible for priority inheritance since the taking thread does not own the semaphore and any other thread can
+give the semaphore.</li>
+</ul>
+<p><img src="./assets/semaphore.png" alt="Image description"
+style="display: block; margin: auto; width: 65%; height: auto; border-radius: 8px; background: white;"></p>
+<h3 id="mutexes">Mutexes</h3>
+<p>As opposed to semaphores, mutexes can only take two values, commonly referred to as locked or unlocked. Additionally, mutexes have ownership properties
+in the sense that only the thread that locks the mutex can unlock it. Think of it as a locking/unlocking mechanism with a single key, where a thread
+wishing to gain access to a single object. For instance, a code section or a resource needs to first gain access to an unlocked mutex, lock it and then
+access the object. If the thread trying to gain access to the mutex sees that the mutex is already locked, then the thread gets blocked and will wait until
+the mutex is unlocked by the thread that locked it.</p>
+<p>A typical use of a mutex is to protect a critical section of the code that can be accessed from multiple threads. The critical section is a piece of
+code that needs to be completed without interruptions from other threads, or else the global/static data within that critical section could be
+misrepresented or get corrupted</p>
+<p>Mutexes have the following properties:</p>
+<ul>
+<li>Locking a mutex will increment the lock count. Recursive locking (reentrant locking) will not make the locking thread block since it already owns
+ the mutex. The thread should make sure that it unlocks the mutex the same number of times that it locked it to release the mutex so that other threads
+ can attempt to own it.</li>
+<li>Unlocking a mutex will decrement the lock count. When the lock count is zero, that means that the mutex is in an unlocked state.
+Threads can attempt to own the mutex only when the mutex is in an unlocked state.</li>
+<li>Only the thread that locked the mutex can unlock it.</li>
+<li>Mutexes locking and unlocking can only be done in threads and not in ISRs. This is because ISRs cannot participate in the ownership and priority
+inheritance mechanism of the scheduler.</li>
+<li>The thread locking the mutex is eligible for priority inheritance since only that thread can unlock the mutex.</li>
+</ul>
+<p><img src="./assets/mutex.png" alt="Image description"
+style="display: block; margin: auto; width: 65%; height: auto; border-radius: 8px; background: white;"></p>
+<h3 id="use-semaphores">Use semaphores</h3>
+<ol>
+<li>
+<p>Set the priority of the producer and consumer thread.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="cp">#define PRODUCER_PRIORITY        5 </span>
+</span><span id="__span-71-2"><a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a><span class="cp">#define CONSUMER_PRIORITY        4</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Initialize the number of instances of the limited resource to be 10 (just assume that we have 10 instances of that resource).</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">available_instance_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create the producer thread that just releases the resource without any checks and sleeps for a random (500-509ms) amount of time.
+When it wakes up from this sleep, it repeats this step in a loop indefinitely.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-73-2"><a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a><span class="p">{</span>
+</span><span id="__span-73-3"><a id="__codelineno-73-3" name="__codelineno-73-3" href="#__codelineno-73-3"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Producer thread started</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-73-4"><a id="__codelineno-73-4" name="__codelineno-73-4" href="#__codelineno-73-4"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-73-5"><a id="__codelineno-73-5" name="__codelineno-73-5" href="#__codelineno-73-5"></a><span class="w">      </span><span class="n">release_access</span><span class="p">();</span>
+</span><span id="__span-73-6"><a id="__codelineno-73-6" name="__codelineno-73-6" href="#__codelineno-73-6"></a><span class="w">      </span><span class="c1">// Assume the resource instance access is released at this point</span>
+</span><span id="__span-73-7"><a id="__codelineno-73-7" name="__codelineno-73-7" href="#__codelineno-73-7"></a><span class="w">      </span><span class="n">k_msleep</span><span class="p">(</span><span class="mi">500</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sys_rand32_get</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-73-8"><a id="__codelineno-73-8" name="__codelineno-73-8" href="#__codelineno-73-8"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-73-9"><a id="__codelineno-73-9" name="__codelineno-73-9" href="#__codelineno-73-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create the consumer thread that gets access to the resource without any checks and assumes to get access before it goes to sleep for a random (0-9ms)
+amount of time. When it wakes up, it repeats this step in a loop indefinitely.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-74-2"><a id="__codelineno-74-2" name="__codelineno-74-2" href="#__codelineno-74-2"></a><span class="p">{</span>
+</span><span id="__span-74-3"><a id="__codelineno-74-3" name="__codelineno-74-3" href="#__codelineno-74-3"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Consumer thread started</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-74-4"><a id="__codelineno-74-4" name="__codelineno-74-4" href="#__codelineno-74-4"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-74-5"><a id="__codelineno-74-5" name="__codelineno-74-5" href="#__codelineno-74-5"></a><span class="w">      </span><span class="n">get_access</span><span class="p">();</span>
+</span><span id="__span-74-6"><a id="__codelineno-74-6" name="__codelineno-74-6" href="#__codelineno-74-6"></a><span class="w">      </span><span class="c1">// Assume the resource instance access is released at this point</span>
+</span><span id="__span-74-7"><a id="__codelineno-74-7" name="__codelineno-74-7" href="#__codelineno-74-7"></a><span class="w">      </span><span class="n">k_msleep</span><span class="p">(</span><span class="n">sys_rand32_get</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-74-8"><a id="__codelineno-74-8" name="__codelineno-74-8" href="#__codelineno-74-8"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-74-9"><a id="__codelineno-74-9" name="__codelineno-74-9" href="#__codelineno-74-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Decrement the available resource in <code>get_access()</code> function.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="n">available_instance_count</span><span class="o">--</span><span class="p">;</span>
+</span><span id="__span-75-2"><a id="__codelineno-75-2" name="__codelineno-75-2" href="#__codelineno-75-2"></a><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Resource taken and available_instance_count = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w">  </span><span class="n">available_instance_count</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Increase the available resource in <code>release_access()</code> function.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="n">available_instance_count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-76-2"><a id="__codelineno-76-2" name="__codelineno-76-2" href="#__codelineno-76-2"></a><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Resource given and available_instance_count = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">available_instance_count</span><span class="p">);</span>
+</span></code></pre></div>
+<p><code>If you compile and build project here - count will print negative numbers (which shouldnt happen with physical resource)</code></p>
+</li>
+<li>
+<p>Add a semaphore by first defining the semaphore using <code>K_SEM_DEFINE()</code></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="n">K_SEM_DEFINE</span><span class="p">(</span><span class="n">instance_monitor_sem</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Before accessing the resource, take the semaphore using <code>k_sem_take()</code> in <code>get_access()</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a><span class="n">k_sem_take</span><span class="p">(</span><span class="o">&amp;</span><span class="n">instance_monitor_sem</span><span class="p">,</span><span class="w"> </span><span class="n">K_FOREVER</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>After finishing accessing the resource release the semaphore using <code>k_sem_give()</code> in <code>release_access()</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="n">k_sem_give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">instance_monitor_sem</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+</ol>
+<p><code>Consumer</code> thread starts accessing all of the 10 resources very quickly but is forced to wait when the resource count becomes 0.
+The <code>consumer</code> thread is then blocked until the <code>producer</code> thread gives the semaphore and the resource becomes available, unblocking the <code>consumer</code> thread.</p>
+<h3 id="use-mutexes">Use mutexes</h3>
+<p>Two threads running and accessing the same code section of code. The logic looks perfect when only one thread is accessing the critical section, but when
+two different threads try to access the code section simultaneously, unexpected things happen(Race condition).</p>
+<ol>
+<li>
+<p>Enable multithreading in the application in prj.conf
+(This configuration defaults to yes in all nRF Connect SDK applications and isn’t strictly necessary to enable manually);</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-80-1"><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="nv">CONFIG_MULTITHREADING</span><span class="o">=</span>y
+</span></code></pre></div>
+</li>
+<li>
+<p>Set the priority of threads to have equal priority.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-81-1"><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a><span class="cp">#define THREAD0_PRIORITY        4 </span>
+</span><span id="__span-81-2"><a id="__codelineno-81-2" name="__codelineno-81-2" href="#__codelineno-81-2"></a><span class="cp">#define THREAD1_PRIORITY        4</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create the functions for the two threads.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-82-1"><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">thread0</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-82-2"><a id="__codelineno-82-2" name="__codelineno-82-2" href="#__codelineno-82-2"></a><span class="p">{</span>
+</span><span id="__span-82-3"><a id="__codelineno-82-3" name="__codelineno-82-3" href="#__codelineno-82-3"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Thread 0 started</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-82-4"><a id="__codelineno-82-4" name="__codelineno-82-4" href="#__codelineno-82-4"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-82-5"><a id="__codelineno-82-5" name="__codelineno-82-5" href="#__codelineno-82-5"></a><span class="w">      </span><span class="n">shared_code_section</span><span class="p">();</span>
+</span><span id="__span-82-6"><a id="__codelineno-82-6" name="__codelineno-82-6" href="#__codelineno-82-6"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-82-7"><a id="__codelineno-82-7" name="__codelineno-82-7" href="#__codelineno-82-7"></a><span class="p">}</span>
+</span><span id="__span-82-8"><a id="__codelineno-82-8" name="__codelineno-82-8" href="#__codelineno-82-8"></a><span class="kt">void</span><span class="w"> </span><span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-82-9"><a id="__codelineno-82-9" name="__codelineno-82-9" href="#__codelineno-82-9"></a><span class="p">{</span>
+</span><span id="__span-82-10"><a id="__codelineno-82-10" name="__codelineno-82-10" href="#__codelineno-82-10"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Thread 1 started</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-82-11"><a id="__codelineno-82-11" name="__codelineno-82-11" href="#__codelineno-82-11"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-82-12"><a id="__codelineno-82-12" name="__codelineno-82-12" href="#__codelineno-82-12"></a><span class="w">      </span><span class="c1">//shared_code_section(); </span>
+</span><span id="__span-82-13"><a id="__codelineno-82-13" name="__codelineno-82-13" href="#__codelineno-82-13"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-82-14"><a id="__codelineno-82-14" name="__codelineno-82-14" href="#__codelineno-82-14"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Define variables and implement logic in <code>shared_code_section()</code>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-83-1"><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="cp">#define COMBINED_TOTAL   40</span>
+</span><span id="__span-83-2"><a id="__codelineno-83-2" name="__codelineno-83-2" href="#__codelineno-83-2"></a><span class="kt">int32_t</span><span class="w"> </span><span class="n">increment_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-83-3"><a id="__codelineno-83-3" name="__codelineno-83-3" href="#__codelineno-83-3"></a><span class="kt">int32_t</span><span class="w"> </span><span class="n">decrement_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">COMBINED_TOTAL</span><span class="p">;</span>
+</span><span id="__span-83-4"><a id="__codelineno-83-4" name="__codelineno-83-4" href="#__codelineno-83-4"></a>
+</span><span id="__span-83-5"><a id="__codelineno-83-5" name="__codelineno-83-5" href="#__codelineno-83-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">shared_code_section</span><span class="p">(){</span>
+</span><span id="__span-83-6"><a id="__codelineno-83-6" name="__codelineno-83-6" href="#__codelineno-83-6"></a><span class="w">   </span><span class="n">increment_count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-83-7"><a id="__codelineno-83-7" name="__codelineno-83-7" href="#__codelineno-83-7"></a><span class="w">   </span><span class="n">increment_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">increment_count</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">COMBINED_TOTAL</span><span class="p">;</span>
+</span><span id="__span-83-8"><a id="__codelineno-83-8" name="__codelineno-83-8" href="#__codelineno-83-8"></a><span class="w">   </span><span class="n">decrement_count</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-83-9"><a id="__codelineno-83-9" name="__codelineno-83-9" href="#__codelineno-83-9"></a><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">decrement_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-83-10"><a id="__codelineno-83-10" name="__codelineno-83-10" href="#__codelineno-83-10"></a><span class="w">   </span><span class="p">{</span>
+</span><span id="__span-83-11"><a id="__codelineno-83-11" name="__codelineno-83-11" href="#__codelineno-83-11"></a><span class="w">      </span><span class="n">decrement_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">COMBINED_TOTAL</span><span class="p">;</span>
+</span><span id="__span-83-12"><a id="__codelineno-83-12" name="__codelineno-83-12" href="#__codelineno-83-12"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-83-13"><a id="__codelineno-83-13" name="__codelineno-83-13" href="#__codelineno-83-13"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Check for <code>race condition</code> in shared_code_section.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-84-1"><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a><span class="k">if</span><span class="p">(</span><span class="n">increment_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">decrement_count</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">COMBINED_TOTAL</span><span class="w"> </span><span class="p">)</span>
+</span><span id="__span-84-2"><a id="__codelineno-84-2" name="__codelineno-84-2" href="#__codelineno-84-2"></a><span class="w">   </span><span class="p">{</span>
+</span><span id="__span-84-3"><a id="__codelineno-84-3" name="__codelineno-84-3" href="#__codelineno-84-3"></a><span class="w">      </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Race condition happend!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-84-4"><a id="__codelineno-84-4" name="__codelineno-84-4" href="#__codelineno-84-4"></a><span class="w">      </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Increment_count (%d) + Decrement_count (%d) = %d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span id="__span-84-5"><a id="__codelineno-84-5" name="__codelineno-84-5" href="#__codelineno-84-5"></a><span class="w">                  </span><span class="n">increment_count</span><span class="p">,</span><span class="w"> </span><span class="n">decrement_count</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">increment_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">decrement_count</span><span class="p">));</span>
+</span><span id="__span-84-6"><a id="__codelineno-84-6" name="__codelineno-84-6" href="#__codelineno-84-6"></a><span class="w">      </span><span class="n">k_msleep</span><span class="p">(</span><span class="mi">400</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sys_rand32_get</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-84-7"><a id="__codelineno-84-7" name="__codelineno-84-7" href="#__codelineno-84-7"></a><span class="w">   </span><span class="p">}</span>
+</span></code></pre></div>
+<p><code>If you compile and build project here - race condition will not happen, as thread1 is commented</code></p>
+</li>
+<li>
+<p>let thread1 access <code>shared_code_section()</code></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-85-1"><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-85-2"><a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a><span class="p">{</span>
+</span><span id="__span-85-3"><a id="__codelineno-85-3" name="__codelineno-85-3" href="#__codelineno-85-3"></a><span class="w">   </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;Thread 1 started</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-85-4"><a id="__codelineno-85-4" name="__codelineno-85-4" href="#__codelineno-85-4"></a><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-85-5"><a id="__codelineno-85-5" name="__codelineno-85-5" href="#__codelineno-85-5"></a><span class="w">      </span><span class="n">shared_code_section</span><span class="p">();</span>
+</span><span id="__span-85-6"><a id="__codelineno-85-6" name="__codelineno-85-6" href="#__codelineno-85-6"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-85-7"><a id="__codelineno-85-7" name="__codelineno-85-7" href="#__codelineno-85-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>If you compile and build project here - race condition will happen</code></p>
+</li>
+<li>
+<p>Define <code>mutex</code></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-86-1"><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a><span class="n">K_MUTEX_DEFINE</span><span class="p">(</span><span class="n">test_mutex</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Lock mutex before logic in <code>shared_code_section()</code></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-87-1"><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="n">k_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">test_mutex</span><span class="p">,</span><span class="w"> </span><span class="n">K_FOREVER</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Unlock it right before if-statement checking race condition.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-88-1"><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a><span class="n">k_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">test_mutex</span><span class="p">);</span>
+</span></code></pre></div>
+</li>
+</ol>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2023 <a href="https://github.com/deimosmh"  target="_blank" rel="noopener">Maciej Hejlasz</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/deimosmh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/maciej-hejlasz/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.tabs.sticky", "navigation.top", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.6c14ae12.min.js"></script>
+      
+        <script src="js/print-site.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
