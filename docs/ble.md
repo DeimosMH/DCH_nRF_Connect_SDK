@@ -159,22 +159,69 @@ services and characteristics.
 Attributes are the main building blocks for services.
 
 - service definition - is comprised of multiple attributes arranged in a GATT-specified format which facilitates standardized data exchange between
-Bluetooth LE devices. Service definitions always start with a service declaration attribute.
+Bluetooth LE devices. Service definitions always start with a **service declaration attribute**.
 - service declaration attribute - holds metadata about the service, it also indicates the beginning of a service in the sequence of services stored
 on a GATT server.
 - characteristic declaration attribute - characteristic is comprised of at least two attributes and optionally more.
 Characteristic definition starts with a declaration attribute, to indicate the beginning of a characteristic in the sequence of characteristics in a
 service definition attributes:
+
+  <img src="./assets/CharDescAtt.png" alt="Image description"
+  style="display: block; margin: auto; width: 75%; height: auto; border-radius: 8px;">
+
   - Characteristic declaration attribute: Holds metadata about the Characteristic Value Attribute.
     - Characteristic properties: What kind of GATT operations are permitted on this characteristic.
     - Characteristic value handle: The handle (address) of the attribute that contains the user data (value), i.e the characteristic value attribute.
     - Characteristic UUID: The UUID of the characteristic being declared.
   - Characteristic value attribute: Holds the actual user data.
-  - Characteristic descriptor attribute (optional): Holds more metadata about the characteristic (GATT-defined Client Characteristic Configuration
-  Descriptor (CCCD) is the most commonly used)
-    - CCCD is a specific type of characteristic descriptor that is necessary when the characteristic supports server-initiated operations
-    (i.e Notify and Indicate). This is a writable descriptor that allows the GATT client to enable and disable notifications or indications for that
-    characteristic.
+  - Characteristic descriptor attribute (optional): Holds more metadata about the characteristic (GATT-defined Client Characteristic
+  Configuration Descriptor (CCCD) is the most commonly used)
+    - CCCD is a specific type of characteristic descriptor that is necessary when the characteristic supports server-initiated
+    operations (i.e Notify and Indicate). This is a writable descriptor that allows the GATT client to enable and
+    disable notifications or indications for that characteristic.
 
 A service can have zero or more characteristic definitions (commonly referred to as characteristics).
 A characteristic is comprised of at least two attributes and optionally more.
+
+## Security in BLE
+
+- Pairing: The process of generating, distributing, and authenticating keys for encryption purposes.
+- Bonding: The process of pairing followed by distribution of keys used to encrypt the link in future reconnections.
+
+### Pairing
+
+- Initiation: send pairing request (only contral), peripheral sends pairing response (`Security Request` or `I/O capabilities`: DisplayOnly/DisplayTesNo/KeyboardOnly/NoInputNoOutput/KeyboardDispay)
+- Perform pairing: Just Works (plain text, unauthenticated), Passkey Entry (6-digit), Out of Band, Numeric Comparison)
+- Key distribution: LTK (Long Term Key) is used to distribute the rest of the keys
+
+### Legacy Pairing
+
+Prior to Bluetooth v4.2.
+STK (Short Term Key) encrypting link can be easly cracked (999999 combinations) and have no MITM protection.
+
+### LE Secure Connections
+
+Use Elliptic-Curve Diffie-Hellman (ECDH) cryptography to generate a public-private key pair.
+They will use one of the four pairing methods (Just Works, Passkey entry, OOB or Numeric Comparison)
+The only data exchanged between the peers is the public keys. The use of the ECDH public key cryptography makes it extremely difficult to crack the LTK
+
+### Security concerns
+
+- Identity tracking
+- Sniffing (Passive eavesdropping)
+- MITM (Active eavesdropping - Man-In-The-Middle attack)
+
+### Security Levels
+
+1. No security (open text, meaning no authentication and no encryption)
+2. Encryption with unauthenticated pairing (Just Works)
+3. Authenticated pairing with encryption (Passkey entry or OOB)
+4. Authenticated LE Secure Connections pairing with encryption
+
+`Permissions` field  of `attribute` - determines security level of connection if accesible
+
+### Filter Accept List
+
+Accepting only connection from whitelist
+
+

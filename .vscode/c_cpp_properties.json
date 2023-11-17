@@ -387,7 +387,8 @@
                 "__ATOMIC_ACQ_REL=4",
                 "__ATOMIC_RELEASE=3",
                 "USBCON"
-            ]
+            ],
+            "configurationProvider": "nordic-semiconductor.nrf-connect"
         }
     ]
 }
